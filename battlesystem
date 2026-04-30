@@ -3,381 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Floor Fighter | Battle System & Progress Tracker</title>
+    <title>Floor Fighter | Gym Leader Archives</title>
     <style>
         :root {
-            --power-color: #ff4136;   /* Red */
-            --style-color: #b10dc9;   /* Purple */
-            --spin-color: #ffdc00;    /* Yellow */
-            --footwork-color: #0074d9; /* Blue */
-            --freeze-color: #2ecc40;   /* Green */
-            --toprock-color: #ff851b;  /* Orange */
-            --battle-color: #a0a0a0;   /* Grey */
-            --character-color: #8b4513;/* Brown */
-            --fusion-color: #8a2be2;   /* BlueViolet */
-            --legacy-color: #ffd700;   /* Gold */
-            --bg-dark: #0a0a0a;
-            --card-bg: #151515;
-            --text-light: #f4f4f4;
+            --power-color: #ff4136; --style-color: #b10dc9; --spin-color: #ffdc00;
+            --footwork-color: #0074d9; --freeze-color: #2ecc40; --toprock-color: #ff851b;
+            --bg-dark: #0a0a0a; --card-bg: #151515;
         }
 
-        body {
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            margin: 0;
-            padding: 20px;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            border-bottom: 2px solid var(--power-color);
-            padding-bottom: 20px;
-        }
-
-        h1 { margin: 0; text-transform: uppercase; letter-spacing: 2px; }
-
-        #exp-display {
-            text-align: center;
-            font-size: 1.8em;
-            font-weight: bold;
-            color: var(--spin-color);
-            margin: 20px 0;
-            text-shadow: 0 0 10px rgba(255, 220, 0, 0.3);
-        }
-
-        .container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        @media (max-width: 800px) { .container { grid-template-columns: 1fr; } }
-
-        /* Panels */
-        .panel {
-            background-color: var(--card-bg);
-            padding: 25px;
-            border-radius: 12px;
-            border: 1px solid #333;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .scroll-area {
-            max-height: 70vh;
-            overflow-y: auto;
-            padding-right: 10px;
-        }
-
-        /* Move Items */
-        .move-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #222;
-        }
-
-        .move-name-label { cursor: pointer; font-weight: 500; }
-        .move-exp { color: #888; font-size: 0.9em; margin-left: 10px; font-family: monospace; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg-dark); color: #eee; margin: 0; padding: 20px; }
+        header { text-align: center; margin-bottom: 50px; border-bottom: 1px solid #333; padding-bottom: 20px; }
         
-        .move-checkbox {
-            width: 22px;
-            height: 22px;
-            accent-color: var(--freeze-color);
-            cursor: pointer;
+        .leader-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 40px; max-width: 1400px; margin: 0 auto; }
+
+        /* Card Setup */
+        .leader-card { background: var(--card-bg); border-radius: 15px; border: 1px solid #333; overflow: hidden; }
+
+        /* Main Image */
+        .main-display { width: 100%; height: 400px; background: #111; position: relative; }
+        .main-display img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Thumbnail Album Bar */
+        .album-bar { 
+            display: flex; 
+            gap: 10px; 
+            padding: 10px; 
+            background: #222; 
+            overflow-x: auto; 
+            border-bottom: 1px solid #333;
         }
-
-        /* Gym Cards */
-        .gym-card {
-            padding: 20px;
-            border-radius: 8px;
-            background-color: #222;
-            margin-bottom: 15px;
-            border-left: 6px solid #444;
-            transition: 0.3s;
+        .thumb { 
+            width: 50px; height: 50px; border-radius: 4px; cursor: pointer; 
+            opacity: 0.5; transition: 0.3s; object-fit: cover; border: 2px solid transparent;
         }
+        .thumb:hover, .thumb.active { opacity: 1; border-color: #fff; }
 
-        .gym-header { display: flex; justify-content: space-between; align-items: center; }
-        .gym-name { font-weight: bold; font-size: 1.1em; text-transform: uppercase; }
+        /* Info Area */
+        .leader-info { padding: 20px; min-height: 120px; border-top: 5px solid #444; }
+        .l-name { font-size: 1.4rem; font-weight: bold; text-transform: uppercase; display: block; margin-bottom: 5px; }
+        .l-gym { font-size: 0.8rem; font-weight: bold; text-transform: uppercase; color: var(--power-color); }
+        .l-desc { font-size: 0.9rem; color: #aaa; margin-top: 10px; line-height: 1.4; }
 
-        .gym-status {
-            font-size: 0.8em;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-weight: bold;
-        }
-
-        .status-locked { background: #444; color: #aaa; }
-        .status-eligible { background: var(--freeze-color); color: #000; box-shadow: 0 0 10px var(--freeze-color); }
-
-        /* Progress Bars */
-        .progress-bar-container {
-            height: 8px;
-            background-color: #111;
-            border-radius: 10px;
-            margin-top: 15px;
-            overflow: hidden;
-        }
-
-        .progress-bar { height: 100%; width: 0%; transition: width 0.5s ease; }
-
-        /* Individual Gym Colors */
-        .gym-card[data-color="power"] { border-color: var(--power-color); }
-        .gym-card[data-color="power"] .progress-bar { background-color: var(--power-color); }
-        .gym-card[data-color="style"] { border-color: var(--style-color); }
-        .gym-card[data-color="style"] .progress-bar { background-color: var(--style-color); }
-        .gym-card[data-color="spin"] { border-color: var(--spin-color); }
-        .gym-card[data-color="spin"] .progress-bar { background-color: var(--spin-color); }
-        .gym-card[data-color="footwork"] { border-color: var(--footwork-color); }
-        .gym-card[data-color="footwork"] .progress-bar { background-color: var(--footwork-color); }
-        .gym-card[data-color="freeze"] { border-color: var(--freeze-color); }
-        .gym-card[data-color="freeze"] .progress-bar { background-color: var(--freeze-color); }
-        .gym-card[data-color="toprock"] { border-color: var(--toprock-color); }
-        .gym-card[data-color="toprock"] .progress-bar { background-color: var(--toprock-color); }
-        .gym-card[data-color="battle"] { border-color: var(--battle-color); }
-        .gym-card[data-color="battle"] .progress-bar { background-color: var(--battle-color); }
-        .gym-card[data-color="character"] { border-color: var(--character-color); }
-        .gym-card[data-color="character"] .progress-bar { background-color: var(--character-color); }
-        .gym-card[data-color="fusion"] { border-color: var(--fusion-color); }
-        .gym-card[data-color="fusion"] .progress-bar { background-color: var(--fusion-color); }
-        .gym-card[data-color="legacy"] { border-color: var(--legacy-color); }
-        .gym-card[data-color="legacy"] .progress-bar { background-color: var(--legacy-color); }
-
-        .back-link {
-            display: inline-block;
-            margin-bottom: 20px;
-            color: var(--text-light);
-            text-decoration: none;
-            font-size: 0.9em;
-            border: 1px solid #444;
-            padding: 5px 15px;
-            border-radius: 4px;
-        }
-        .back-link:hover { border-color: var(--power-color); }
+        .card-power .leader-info { border-color: var(--power-color); }
+        .card-power .l-gym { color: var(--power-color); }
     </style>
 </head>
 <body>
 
-    <header>
-        <a href="index.html" class="back-link">← HUB</a>
-        <h1>Battle Eligibility System</h1>
-        <div id="exp-display">Total Power Level: 0.0 EXP</div>
-    </header>
+<header>
+    <h1>Gym Leader Archives</h1>
+    <p>Select a thumbnail to view the Masters of each style.</p>
+</header>
 
-    <div class="container">
-        <!-- Move Checklist Section -->
-        <div class="panel">
-            <h2 style="margin-top:0;">Arsenal Checklist (104 Moves)</h2>
-            <div id="move-list-container" class="scroll-area">
-                <!-- Moves injected by JS -->
-            </div>
+<div class="leader-grid">
+    <!-- POWER GYM ALBUM -->
+    <div class="leader-card card-power" id="gym-power">
+        <div class="main-display">
+            <img id="power-main" src="leaders/power1.jpg" alt="Current Leader">
+        </div>
+        
+        <!-- Album Thumbnails -->
+        <div class="album-bar">
+            <img class="thumb active" src="leaders/power1.jpg" onclick="updateLeader('power', 'Ignition', 'Master of Airflares.', this)">
+            <img class="thumb" src="leaders/power2.jpg" onclick="updateLeader('power', 'Voltage', 'High-speed headspins specialist.', this)">
+            <img class="thumb" src="leaders/power3.jpg" onclick="updateLeader('power', 'Crush', 'Heavyweight power move expert.', this)">
+            <!-- Add up to 10 here -->
         </div>
 
-        <!-- Gym Eligibility Section -->
-        <div class="panel">
-            <h2 style="margin-top:0;">Gym Eligibility</h2>
-            <div id="gym-status-container" class="scroll-area">
-                <!-- Gyms injected by JS -->
-            </div>
+        <div class="leader-info">
+            <span class="l-gym">Power Gym</span>
+            <span class="l-name" id="power-name">Ignition</span>
+            <p class="l-desc" id="power-desc">Master of high-flying Airflares and explosive power moves.</p>
         </div>
     </div>
 
-<script>
-// DATA STRUCTURES
-const MOVES_DATA = [
-    { "name": "One-Handed Airflare", "difficulty": 9.9 },
-    { "name": "Double Airchair", "difficulty": 9.5 },
-    { "name": "Reverse Airflare", "difficulty": 9.5 },
-    { "name": "Jackhammers", "difficulty": 9.5 },
-    { "name": "Elbow Airflare", "difficulty": 9.4 },
-    { "name": "Barrel Windmill", "difficulty": 9.4 },
-    { "name": "Hollowback", "difficulty": 9.3 },
-    { "name": "Handcuffed Windmill", "difficulty": 9.3 },
-    { "name": "Elbow Spin", "difficulty": 9.3 },
-    { "name": "Airchair Spin", "difficulty": 9.2 },
-    { "name": "Invert (Ponk)", "difficulty": 9.2 },
-    { "name": "Chair Flare", "difficulty": 9.2 },
-    { "name": "Taisuke Criticals", "difficulty": 9.2 },
-    { "name": "Airflare", "difficulty": 9.1 },
-    { "name": "Elbow Airchair", "difficulty": 9.0 },
-    { "name": "Airbaby Spin", "difficulty": 9.0 },
-    { "name": "Halo", "difficulty": 9.0 },
-    { "name": "Headspin (continuous)", "difficulty": 8.9 },
-    { "name": "Lotus Airbaby", "difficulty": 8.9 },
-    { "name": "1-Handed Airbaby", "difficulty": 8.8 },
-    { "name": "Flare", "difficulty": 8.8 },
-    { "name": "Coin Drop to Windmill", "difficulty": 8.8 },
-    { "name": "Hanging Airbaby", "difficulty": 8.7 },
-    { "name": "Windmill (clean)", "difficulty": 8.7 },
-    { "name": "Head Swipe", "difficulty": 8.7 },
-    { "name": "UFO", "difficulty": 8.6 },
-    { "name": "Reverse Airbaby", "difficulty": 8.6 },
-    { "name": "Sidechair", "difficulty": 8.5 },
-    { "name": "Swipe", "difficulty": 8.5 },
-    { "name": "Airchair", "difficulty": 8.4 },
-    { "name": "Kip-Up", "difficulty": 8.4 },
-    { "name": "Shoulder Freeze", "difficulty": 8.3 },
-    { "name": "Elbow Freeze", "difficulty": 8.3 },
-    { "name": "Baby Windmill", "difficulty": 8.2 },
-    { "name": "Backspin", "difficulty": 8.1 },
-    { "name": "Chair Freeze", "difficulty": 8.0 },
-    { "name": "Airbaby", "difficulty": 8.0 },
-    { "name": "Headstand", "difficulty": 7.9 },
-    { "name": "Turtle Freeze", "difficulty": 7.9 },
-    { "name": "Shoulder Spin", "difficulty": 7.8 },
-    { "name": "Bridge Kickover", "difficulty": 7.7 },
-    { "name": "Coffee Grinder", "difficulty": 7.6 },
-    { "name": "6-Step", "difficulty": 7.5 },
-    { "name": "3-Step", "difficulty": 7.4 },
-    { "name": "CCs", "difficulty": 7.3 },
-    { "name": "Zulu Spins", "difficulty": 7.2 },
-    { "name": "Spindle", "difficulty": 7.1 },
-    { "name": "Kickouts", "difficulty": 7.0 },
-    { "name": "Scramble", "difficulty": 6.9 },
-    { "name": "Bellymill", "difficulty": 6.8 },
-    { "name": "Baby Freeze", "difficulty": 6.7 },
-    { "name": "Side Step", "difficulty": 6.6 },
-    { "name": "Indian Step", "difficulty": 6.5 },
-    { "name": "Bronx Rock", "difficulty": 6.4 },
-    { "name": "Brooklyn Rock", "difficulty": 6.3 },
-    { "name": "Latin Rock", "difficulty": 6.2 },
-    { "name": "Outlaw Step", "difficulty": 6.1 },
-    { "name": "Hip Twist", "difficulty": 6.0 },
-    { "name": "4 Corners", "difficulty": 5.9 },
-    { "name": "Kick Step", "difficulty": 5.8 },
-    { "name": "Sweep Drop", "difficulty": 5.7 },
-    { "name": "Knee Drop", "difficulty": 5.6 },
-    { "name": "Corkscrew Drop", "difficulty": 5.5 },
-    { "name": "Thread Drop", "difficulty": 5.4 },
-    { "name": "Coin Drop", "difficulty": 5.3 },
-    { "name": "Freeze to Swipe", "difficulty": 5.2 },
-    { "name": "Pretzel", "difficulty": 5.1 },
-    { "name": "Crab Freeze", "difficulty": 5.0 },
-    { "name": "Comboing", "difficulty": 4.9 },
-    { "name": "Toprock Shuffle", "difficulty": 4.8 },
-    { "name": "Baby Love", "difficulty": 4.7 },
-    { "name": "Bicycle Pumps", "difficulty": 4.6 },
-    { "name": "Threads", "difficulty": 4.5 },
-    { "name": "CC Floor Rock", "difficulty": 4.4 },
-    { "name": "Body Rock", "difficulty": 4.3 },
-    { "name": "Scissors", "difficulty": 4.2 },
-    { "name": "Belly Swim", "difficulty": 4.1 },
-    { "name": "Back CCs", "difficulty": 4.0 },
-    { "name": "Power Step Hop", "difficulty": 3.9 },
-    { "name": "Power Circle", "difficulty": 3.8 },
-    { "name": "Boyoing", "difficulty": 3.7 },
-    { "name": "Derulo Rock", "difficulty": 3.6 },
-    { "name": "Outlaw Spin", "difficulty": 3.5 },
-    { "name": "Kick Swipe", "difficulty": 3.4 },
-    { "name": "Tripod Windmill", "difficulty": 3.3 },
-    { "name": "Head Swipe Combo", "difficulty": 3.2 },
-    { "name": "Head Flip", "difficulty": 3.1 },
-    { "name": "Headspring", "difficulty": 3.0 },
-    { "name": "Collapse to Backspin", "difficulty": 2.9 },
-    { "name": "Kip-Up to Freeze", "difficulty": 2.8 },
-    { "name": "2-Step", "difficulty": 2.7 },
-    { "name": "4-Step", "difficulty": 2.6 },
-    { "name": "5-Step", "difficulty": 2.5 },
-    { "name": "7-Step", "difficulty": 2.4 },
-    { "name": "8-Step", "difficulty": 2.3 },
-    { "name": "10-Step", "difficulty": 2.2 },
-    { "name": "12-Step", "difficulty": 2.1 },
-    { "name": "Freeze Stack", "difficulty": 2.0 },
-    { "name": "Shoulder Kip-Up", "difficulty": 1.9 },
-    { "name": "Combo Freeze", "difficulty": 1.8 },
-    { "name": "Bridge Walkover", "difficulty": 1.7 },
-    { "name": "Crab Walk", "difficulty": 1.5 },
-    { "name": "Toprock Combo", "difficulty": 1.2 },
-    { "name": "Basic Toprock", "difficulty": 1.0 }
-];
-
-const GYMS_DATA = [
-    { "name": "Power Gym", "color": "power", "requiredMoves": ["Coin Drop to Windmill", "Flare", "One-Handed Airflare", "Reverse Airflare", "Elbow Airflare", "Airflare", "Windmill (clean)", "Barrel Windmill"] },
-    { "name": "Style Gym", "color": "style", "requiredMoves": ["Threads", "Freeze to Swipe", "Taisuke Criticals", "Derulo Rock", "Comboing", "Boyoing", "Power Circle", "Toprock Shuffle"] },
-    { "name": "Spin Gym", "color": "spin", "requiredMoves": ["Body Rock", "Scissors", "UFO", "CCs", "Bicycle Pumps", "CC Floor Rock", "Zulu Spins"] },
-    { "name": "Footwork Gym", "color": "footwork", "requiredMoves": ["8-Step", "6-Step", "4-Step", "12-Step", "3-Step", "5-Step", "7-Step", "10-Step"] },
-    { "name": "Freeze Gym", "color": "freeze", "requiredMoves": ["Airbaby Spin", "Turtle Freeze", "Airbaby", "Headstand", "Baby Freeze", "Shoulder Freeze", "Elbow Freeze", "Chair Freeze"] },
-    { "name": "Toprock Gym", "color": "toprock", "requiredMoves": ["Bronx Rock", "Indian Step", "Basic Toprock", "Brooklyn Rock", "Hip Twist", "Latin Rock", "4 Corners", "Toprock Combo"] },
-    { "name": "Battle Gym", "color": "battle", "requiredMoves": ["Head Swipe", "Pretzel", "Kip-Up to Freeze", "Collapse to Backspin", "Crab Freeze", "Head Flip", "Headspring", "Head Swipe Combo"] },
-    { "name": "Character Gym", "color": "character", "requiredMoves": ["Belly Swim", "Back CCs", "Side Step", "Baby Love", "Outlaw Spin", "Power Step Hop", "Bridge Kickover", "Crab Walk"] },
-    { "name": "Fusion Gym", "color": "fusion", "requiredMoves": ["Airchair Spin", "Elbow Airchair", "Sidechair", "Tripod Windmill", "Invert (Ponk)", "Hanging Airbaby", "Lotus Airbaby", "Reverse Airbaby"] },
-    { "name": "Legacy Gym", "color": "legacy", "requiredMoves": ["Airchair", "Swipe", "Handcuffed Windmill", "Headspin (continuous)", "Elbow Spin", "Kip-Up", "Chair Flare"] }
-];
-
-const STORAGE_KEY = 'floorFighterProgress';
-
-// LOGIC
-function calculateAndDisplayTotalExp() {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-    let total = 0;
-    const map = new Map(MOVES_DATA.map(m => [m.name, m.difficulty]));
-    for (const move in saved) {
-        if (saved[move]) total += map.get(move) || 0;
-    }
-    document.getElementById('exp-display').textContent = `Total Power Level: ${total.toFixed(1)} EXP`;
-}
-
-function renderMoveList() {
-    const container = document.getElementById('move-list-container');
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-    MOVES_DATA.forEach((move, i) => {
-        const item = document.createElement('div');
-        item.className = 'move-item';
-        item.innerHTML = `
-            <div>
-                <label class="move-name-label" for="m-${i}">${i + 1}. ${move.name}</label>
-                <span class="move-exp">(${move.difficulty.toFixed(1)})</span>
-            </div>
-            <input type="checkbox" class="move-checkbox" id="m-${i}" ${saved[move.name] ? 'checked' : ''} data-name="${move.name}">
-        `;
-        item.querySelector('input').addEventListener('change', handleToggle);
-        container.appendChild(item);
-    });
-}
-
-function handleToggle(e) {
-    const name = e.target.dataset.name;
-    const checked = e.target.checked;
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-    if (checked) saved[name] = true; else delete saved[name];
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
-    updateGymStatus();
-    calculateAndDisplayTotalExp();
-}
-
-function updateGymStatus() {
-    const container = document.getElementById('gym-status-container');
-    container.innerHTML = '';
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-    GYMS_DATA.forEach(gym => {
-        const completed = gym.requiredMoves.filter(m => saved[m]).length;
-        const percent = Math.round((completed / gym.requiredMoves.length) * 100);
-        const eligible = percent === 100;
+    <!-- STYLE GYM ALBUM -->
+    <div class="leader-card card-style" id="gym-style">
+        <div class="main-display">
+            <img id="style-main" src="leaders/style1.jpg" alt="Current Leader">
+        </div>
         
-        const card = document.createElement('div');
-        card.className = 'gym-card';
-        card.setAttribute('data-color', gym.color);
-        card.innerHTML = `
-            <div class="gym-header">
-                <span class="gym-name">${gym.name}</span>
-                <span class="gym-status ${eligible ? 'status-eligible' : 'status-locked'}">${eligible ? 'READY TO BATTLE' : 'LOCKED'}</span>
-            </div>
-            <div class="progress-bar-container"><div class="progress-bar" style="width: ${percent}%"></div></div>
-            <p style="font-size: 0.8em; margin-top: 8px;">Sync: ${percent}% (${completed}/${gym.requiredMoves.length} moves)</p>
-        `;
-        container.appendChild(card);
-    });
-}
+        <div class="album-bar">
+            <img class="thumb active" src="leaders/style1.jpg" onclick="updateLeader('style', 'Vibe', 'Intricate thread specialist.', this)">
+            <img class="thumb" src="leaders/style2.jpg" onclick="updateLeader('style', 'Flow', 'Rhythmic footwork master.', this)">
+        </div>
 
-document.addEventListener('DOMContentLoaded', () => {
-    renderMoveList();
-    updateGymStatus();
-    calculateAndDisplayTotalExp();
-});
+        <div class="leader-info">
+            <span class="l-gym" style="color: var(--style-color);">Style Gym</span>
+            <span class="l-name" id="style-name">Vibe</span>
+            <p class="l-desc" id="style-desc">Elegance meets the floor. Specializes in high-concept rhythmic combos.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function updateLeader(gymId, name, desc, thumbElement) {
+        // Update Image
+        document.getElementById(gymId + '-main').src = thumbElement.src;
+        // Update Text
+        document.getElementById(gymId + '-name').innerText = name;
+        document.getElementById(gymId + '-desc').innerText = desc;
+        
+        // Update Active Thumbnail State
+        let thumbs = thumbElement.parentElement.getElementsByClassName('thumb');
+        for (let t of thumbs) t.classList.remove('active');
+        thumbElement.classList.add('active');
+    }
 </script>
+
 </body>
 </html>
