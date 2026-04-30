@@ -21,6 +21,38 @@
             line-height: 1.6;
         }
 
+        /* NEW NAVIGATION BAR */
+        nav {
+            background: #000;
+            border-bottom: 1px solid #222;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .nav-link {
+            color: var(--text-gray);
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--neon-red);
+        }
+
         .container {
             max-width: 1000px;
             margin: 0 auto;
@@ -160,6 +192,17 @@
     </style>
 </head>
 <body>
+
+<!-- NAVIGATION BAR -->
+<nav>
+    <div class="nav-container">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="battle-system.html" class="nav-link">Battle System</a>
+        <a href="gym-leaders.html" class="nav-link">Gym Leaders</a>
+        <a href="gallery.html" class="nav-link">Gallery</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+    </div>
+</nav>
 
 <div class="container">
     <header>
