@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Floor Fighter | Contact & Evidence</title>
+    <style>
+        :root {
+            --neon-red: #ff0000;
+            --bg-dark: #0a0a0a;
+            --card-bg: #151515;
+            --accent-gold: #ffd700;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: var(--bg-dark);
+            color: #eee;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid var(--neon-red);
+            padding-bottom: 20px;
+        }
+
+        .back-link {
+            color: #888;
+            text-decoration: none;
+            border: 1px solid #333;
+            padding: 5px 15px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .contact-box {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid #333;
+            text-align: center;
+        }
+
+        h2 { color: var(--accent-gold); text-transform: uppercase; margin-top: 0; }
+
+        p { line-height: 1.6; color: #ccc; margin-bottom: 30px; }
+
+        .btn-mail {
+            display: block;
+            background: var(--neon-red);
+            color: white;
+            text-decoration: none;
+            padding: 20px;
+            border-radius: 4px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+
+        .btn-mail:hover {
+            background: #cc0000;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+        }
+
+        .instructions {
+            margin-top: 30px;
+            text-align: left;
+            font-size: 0.9rem;
+            color: #888;
+            border-top: 1px solid #222;
+            padding-top: 20px;
+        }
+
+        ul { padding-left: 20px; }
+        li { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="back-link">← HUB</a>
+
+    <header>
+        <h1>Challenge a Gym</h1>
+        <p>Evidence submission for tournament eligibility.</p>
+    </header>
+
+    <div class="contact-box">
+        <h2>Submit Evidence</h2>
+        <p>Click the button below to open your email client. Please attach your videos or provide links to your move sets for review.</p>
+        
+        <a href="mailto:YOUR-EMAIL-HERE@://example.com Fighter Battle Evidence&body=Dancer Name:%0D%0ATarget Gym:%0D%0AMove List / Evidence Links:" class="btn-mail">
+            Open Mail Client
+        </a>
+
+        <div class="instructions">
+            <strong>Submission Checklist:</strong>
+            <ul>
+                <li>State your B-Boy/B-Girl Alias clearly.</li>
+                <li>Identify which Gym Medal you are pursuing.</li>
+                <li>Provide direct links to your video evidence.</li>
+                <li>Ensure all required moves from the Battle System are shown.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
