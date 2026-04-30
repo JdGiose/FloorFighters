@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Floor Fighter | Breakdance Tournament</title>
+    <!-- Supabase Library -->
+    <script src="https://jsdelivr.net"></script>
     <style>
         :root {
             --neon-red: #ff0000;
@@ -55,9 +57,14 @@
             color: var(--neon-red);
         }
 
-        /* Conditional Tab Styling */
-        #members-tab { display: none; color: var(--accent-gold); }
-        #sign-out-btn { display: none; font-size: 10px; border: 1px solid #333; padding: 4px 8px; border-radius: 4px; }
+        /* Dynamic Visibility Styles */
+        #members-tab, #sign-out-btn {
+            display: none; /* Hidden by default until real login */
+        }
+
+        #members-tab {
+            color: var(--accent-gold);
+        }
 
         .container {
             max-width: 1000px;
@@ -129,7 +136,11 @@
         }
 
         /* Progression Steps */
-        .steps { list-style: none; padding: 0; }
+        .steps {
+            list-style: none;
+            padding: 0;
+        }
+
         .step-item {
             display: flex;
             align-items: center;
@@ -139,17 +150,58 @@
             border-radius: 4px;
             border-left: 4px solid var(--accent-gold);
         }
-        .step-item span { font-size: 1.5rem; font-weight: bold; margin-right: 20px; color: var(--accent-gold); }
+
+        .step-item span {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-right: 20px;
+            color: var(--accent-gold);
+        }
 
         /* Call to Action Buttons */
-        .cta-container { display: flex; gap: 20px; justify-content: center; margin-top: 40px; }
-        .btn { padding: 15px 30px; text-decoration: none; font-weight: bold; text-transform: uppercase; border-radius: 4px; transition: 0.3s; text-align: center; }
-        .btn-primary { background-color: var(--neon-red); color: #fff; }
-        .btn-primary:hover { background-color: #cc0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.4); }
-        .btn-secondary { border: 2px solid var(--accent-gold); color: var(--accent-gold); }
-        .btn-secondary:hover { background: var(--accent-gold); color: #000; }
+        .cta-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 40px;
+        }
 
-        footer { text-align: center; padding: 40px; font-size: 0.9rem; color: #555; }
+        .btn {
+            padding: 15px 30px;
+            text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 4px;
+            transition: 0.3s;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--neon-red);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background-color: #cc0000;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+        }
+
+        .btn-secondary {
+            border: 2px solid var(--accent-gold);
+            color: var(--accent-gold);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-gold);
+            color: #000;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            font-size: 0.9rem;
+            color: #555;
+        }
     </style>
 </head>
 <body>
@@ -158,15 +210,15 @@
 <nav>
     <div class="nav-container">
         <a href="index.html" class="nav-link">Home</a>
-        <a href="battlesystem" class="nav-link">Battle System</a>
+        <a href="battle-system.html" class="nav-link">Battle System</a>
         <a href="gym-leaders.html" class="nav-link">Gym Leaders</a>
         <a href="gallery.html" class="nav-link">Gallery</a>
         <a href="contact.html" class="nav-link">Contact</a>
         
-        <!-- TOGGLEABLE TABS -->
-        <a id="signin-btn" class="nav-link" onclick="handleAuth()">Sign In</a>
+        <!-- AUTH CONTROLLED LINKS -->
+        <a id="signin-btn" class="nav-link" onclick="handleSignIn()">Sign In</a>
         <a href="members.html" id="members-tab" class="nav-link">Members</a>
-        <a id="sign-out-btn" class="nav-link" onclick="handleAuth()">Sign Out</a>
+        <a id="sign-out-btn" class="nav-link" onclick="handleSignOut()">Sign Out</a>
     </div>
 </nav>
 
@@ -226,41 +278,47 @@
 </div>
 
 <script>
-    const AUTH_KEY = 'floorFighterLoggedIn';
+    // 1. Initialize Supabase
+    // Replace the placeholders with your actual keys from Supabase Dashboard
+    const _sb = supabase.createClient('YOUR_SUPABASE_URL', 'YOUR_SUPABASE_ANON_KEY');
 
-    function handleAuth() {
-        const isLoggedIn = localStorage.getItem(AUTH_KEY) === 'true';
-        if (isLoggedIn) {
-            // Sign Out
-            localStorage.setItem(AUTH_KEY, 'false');
-            alert("Signed Out of Tournament Network.");
-        } else {
-            // Sign In
-            localStorage.setItem(AUTH_KEY, 'true');
-            alert("Welcome back, Challenger! Members area unlocked.");
-        }
-        updateNav();
+    // 2. Real Auth Logic
+    async function handleSignIn() {
+        const { error } = await _sb.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+                redirectTo: window.location.origin + window.location.pathname
+            }
+        });
+        if (error) alert("Auth Error: " + error.message);
     }
 
-    function updateNav() {
-        const isLoggedIn = localStorage.getItem(AUTH_KEY) === 'true';
+    async function handleSignOut() {
+        const { error } = await _sb.auth.signOut();
+        if (error) alert("Sign Out Error: " + error.message);
+        // Page state will update via the listener below
+    }
+
+    // 3. UI State Listener
+    // Automatically toggles visibility based on real session status
+    _sb.auth.onAuthStateChange((event, session) => {
+        const user = session?.user;
         const signInBtn = document.getElementById('signin-btn');
         const membersTab = document.getElementById('members-tab');
         const signOutBtn = document.getElementById('sign-out-btn');
 
-        if (isLoggedIn) {
+        if (user) {
+            // Logged In: Show Members & Sign Out
             signInBtn.style.display = 'none';
             membersTab.style.display = 'block';
             signOutBtn.style.display = 'block';
         } else {
+            // Logged Out: Show Sign In only
             signInBtn.style.display = 'block';
             membersTab.style.display = 'none';
             signOutBtn.style.display = 'none';
         }
-    }
-
-    // Run on load
-    document.addEventListener('DOMContentLoaded', updateNav);
+    });
 </script>
 
 </body>
