@@ -225,43 +225,60 @@
     </footer>
 </div>
 
+<!-- Supabase client (must be first) -->
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
 <script>
-    const AUTH_KEY = 'floorFighterLoggedIn';
+  // 🔐 Supabase config (you will replace these values)
+  const supabaseUrl = 'https://YOUR_PROJECT_ID.supabase.co';
+  const supabaseKey = 'YOUR_PUBLIC_ANON_KEY';
 
-    function handleAuth() {
-        const isLoggedIn = localStorage.getItem(AUTH_KEY) === 'true';
-        if (isLoggedIn) {
-            // Sign Out
-            localStorage.setItem(AUTH_KEY, 'false');
-            alert("Signed Out of Tournament Network.");
-        } else {
-            // Sign In
-            localStorage.setItem(AUTH_KEY, 'true');
-            alert("Welcome back, Challenger! Members area unlocked.");
-        }
-        updateNav();
+  const supabase = window.supabase.createClient(
+    supabaseUrl,
+    supabaseKey
+  );
+
+  // 🔑 SIGN IN / SIGN OUT (replaces handleAuth completely)
+  async function handleAuth() {
+    const { data: { session } } = await supabase.auth.getSession();
+
+    if (session) {
+      await supabase.auth.signOut();
+      alert('Signed out of Tournament Network.');
+    } else {
+      await supabase.auth.signInWithOAuth({
+        provider: 'google'
+      });
+      // redirect handled by Supabase
     }
+  }
 
-    function updateNav() {
-        const isLoggedIn = localStorage.getItem(AUTH_KEY) === 'true';
-        const signInBtn = document.getElementById('signin-btn');
-        const membersTab = document.getElementById('members-tab');
-        const signOutBtn = document.getElementById('sign-out-btn');
+  // 🔄 NAV DISPLAY (replaces updateNav)
+  async function updateNav() {
+    const signInBtn = document.getElementById('signin-btn');
+    const membersTab = document.getElementById('members-tab');
+    const signOutBtn = document.getElementById('sign-out-btn');
 
-        if (isLoggedIn) {
-            signInBtn.style.display = 'none';
-            membersTab.style.display = 'block';
-            signOutBtn.style.display = 'block';
-        } else {
-            signInBtn.style.display = 'block';
-            membersTab.style.display = 'none';
-            signOutBtn.style.display = 'none';
-        }
+    const { data: { session } } = await supabase.auth.getSession();
+
+    if (session) {
+      signInBtn.style.display = 'none';
+      membersTab.style.display = 'block';
+      signOutBtn.style.display = 'block';
+    } else {
+      signInBtn.style.display = 'block';
+      membersTab.style.display = 'none';
+      signOutBtn.style.display = 'none';
     }
+  }
 
-    // Run on load
-    document.addEventListener('DOMContentLoaded', updateNav);
-    <script src="https://unpkg.com/@supabase/supabase>
+  // 🔔 Listen for auth changes (important after OAuth redirect)
+  supabase.auth.onAuthStateChange(() => {
+    updateNav();
+  });
+
+  // 🚀 Initial load
+  document.addEventListener('DOMContentLoaded', updateNav);
 </script>
 
 </body>
