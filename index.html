@@ -247,10 +247,10 @@
 const supabaseUrl = 'https://ytvscznqokavsgrbhrgf.supabase.co';
 const supabaseKey = 'sb_publishable_eBNJuaN7oZoQJOglw5IBdg_mGlqZFmc';
 
-  const supabase = window.supabase.createClient(
-    supabaseUrl,
-    supabaseKey
-  );
+  const supabaseClient = window.supabase.createClient(
+  supabaseUrl,
+  supabaseKey
+);
 
   // 🔑 SIGN IN / SIGN OUT
 async function handleSignIn() {
