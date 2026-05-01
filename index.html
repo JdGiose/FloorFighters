@@ -181,6 +181,7 @@
    onclick="handleSignOut(); return false;">
   Sign Out
 </a>
+    </div>
 </nav>
 
 <div class="container">
@@ -251,26 +252,33 @@ const supabaseKey = 'sb_publishable_eBNJuaN7oZoQJOglw5IBdg_mGlqZFmc';
     supabaseKey
   );
 
-  // 🔑 SIGN IN / SIGN OUT (replaces handleAuth completely)
- async function handleSignIn() {
+  // 🔑 SIGN IN / SIGN OUT
+async function handleSignIn() {
   const userEmail = prompt('Enter your email to sign in:');
   if (!userEmail) return;
 
-  await supabase.auth.signInWithOtp({
+  // Optimized to match Site URL in image_5b2538.png
+  const { error } = await supabase.auth.signInWithOtp({
     email: userEmail,
     options: {
-      emailRedirectTo: window.location.href
+      emailRedirectTo: 'https://jdgiose.github.io/FloorFighters'
     }
   });
 
-  alert('Check your email for the magic link.');
+  if (error) {
+    console.error('Login error:', error.message);
+    alert('Error sending magic link: ' + error.message);
+  } else {
+    alert('Check your email for the magic link.');
+  }
 }
 
 async function handleSignOut() {
-  await supabase.auth.signOut();
+  const { error } = await supabase.auth.signOut();
+  if (error) console.error('Sign out error:', error.message);
 }
 
-  // 🔄 NAV DISPLAY (replaces updateNav)
+  // 🔄 NAV DISPLAY
   async function updateNav() {
     const signInBtn = document.getElementById('signin-btn');
     const membersTab = document.getElementById('members-tab');
@@ -289,7 +297,7 @@ async function handleSignOut() {
     }
   }
 
-  // 🔔 Listen for auth changes (important after OAuth redirect)
+  // 🔔 Listen for auth changes
   supabase.auth.onAuthStateChange(() => {
     updateNav();
   });
