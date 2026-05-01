@@ -3,113 +3,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Floor Fighter | Gym Leader Archives</title>
+    <title>Floor Fighter | Gym Leaders</title>
     <style>
         :root {
-            --power-color: #ff4136; --style-color: #b10dc9; --spin-color: #ffdc00;
-            --footwork-color: #0074d9; --freeze-color: #2ecc40; --toprock-color: #ff851b;
-            --bg-dark: #0a0a0a; --card-bg: #151515;
+            --power-color: #ff4136;   --style-color: #b10dc9;
+            --spin-color: #ffdc00;    --footwork-color: #0074d9;
+            --freeze-color: #2ecc40;   --toprock-color: #ff851b;
+            --battle-color: #a0a0a0;   --character-color: #8b4513;
+            --fusion-color: #8a2be2;   --legacy-color: #ffd700;
+            --bg-dark: #0a0a0a;        --card-bg: #151515;
         }
 
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg-dark); color: #eee; margin: 0; padding: 20px; }
-        header { text-align: center; margin-bottom: 50px; border-bottom: 1px solid #333; padding-bottom: 20px; }
-        
-        .leader-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 40px; max-width: 1400px; margin: 0 auto; }
-
-        /* Card Setup */
-        .leader-card { background: var(--card-bg); border-radius: 15px; border: 1px solid #333; overflow: hidden; }
-
-        /* Main Image */
-        .main-display { width: 100%; height: 400px; background: #111; position: relative; }
-        .main-display img { width: 100%; height: 100%; object-fit: cover; }
-
-        /* Thumbnail Album Bar */
-        .album-bar { 
-            display: flex; 
-            gap: 10px; 
-            padding: 10px; 
-            background: #222; 
-            overflow-x: auto; 
-            border-bottom: 1px solid #333;
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-dark);
+            color: #eee;
+            margin: 0;
+            padding: 20px;
         }
-        .thumb { 
-            width: 50px; height: 50px; border-radius: 4px; cursor: pointer; 
-            opacity: 0.5; transition: 0.3s; object-fit: cover; border: 2px solid transparent;
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 20px;
         }
-        .thumb:hover, .thumb.active { opacity: 1; border-color: #fff; }
 
-        /* Info Area */
-        .leader-info { padding: 20px; min-height: 120px; border-top: 5px solid #444; }
-        .l-name { font-size: 1.4rem; font-weight: bold; text-transform: uppercase; display: block; margin-bottom: 5px; }
-        .l-gym { font-size: 0.8rem; font-weight: bold; text-transform: uppercase; color: var(--power-color); }
-        .l-desc { font-size: 0.9rem; color: #aaa; margin-top: 10px; line-height: 1.4; }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #888;
+            text-decoration: none;
+            border: 1px solid #333;
+            padding: 5px 15px;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
 
-        .card-power .leader-info { border-color: var(--power-color); }
-        .card-power .l-gym { color: var(--power-color); }
+        .back-link:hover { border-color: var(--power-color); color: #fff; }
+
+        h1 { text-transform: uppercase; letter-spacing: 3px; font-size: 2.5rem; }
+
+        /* Gallery Grid */
+        .leader-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Leader Card Styling */
+        .leader-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #333;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .leader-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            z-index: 10;
+        }
+
+        /* Image Album Container */
+        .leader-img-box {
+            width: 100%;
+            height: 350px;
+            background: #111;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .leader-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(40%) contrast(1.1);
+            transition: 0.5s;
+        }
+
+        .leader-card:hover img {
+            filter: grayscale(0%) contrast(1);
+        }
+
+        /* Text Box */
+        .leader-info {
+            padding: 20px;
+            border-top: 4px solid #444;
+        }
+
+        .leader-name {
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .gym-type {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .leader-desc {
+            font-size: 0.9rem;
+            color: #aaa;
+            line-height: 1.5;
+            height: 60px;
+            overflow: hidden;
+        }
+
+        /* Border Color Overrides per Gym Type */
+        .card-power { border-color: var(--power-color); } .card-power .leader-info { border-color: var(--power-color); }
+        .card-style { border-color: var(--style-color); } .card-style .leader-info { border-color: var(--style-color); }
+        .card-spin { border-color: var(--spin-color); } .card-spin .leader-info { border-color: var(--spin-color); }
+        .card-footwork { border-color: var(--footwork-color); } .card-footwork .leader-info { border-color: var(--footwork-color); }
+        .card-freeze { border-color: var(--freeze-color); } .card-freeze .leader-info { border-color: var(--freeze-color); }
+        .card-toprock { border-color: var(--toprock-color); } .card-toprock .leader-info { border-color: var(--toprock-color); }
+        .card-battle { border-color: var(--battle-color); } .card-battle .leader-info { border-color: var(--battle-color); }
+        .card-character { border-color: var(--character-color); } .card-character .leader-info { border-color: var(--character-color); }
+        .card-fusion { border-color: var(--fusion-color); } .card-fusion .leader-info { border-color: var(--fusion-color); }
+        .card-legacy { border-color: var(--legacy-color); } .card-legacy .leader-info { border-color: var(--legacy-color); }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Gym Leader Archives</h1>
-    <p>Select a thumbnail to view the Masters of each style.</p>
+    <a href="index.html" class="back-link">← HUB</a>
+    <h1>Gym Leaders</h1>
+    <p>Defeat these masters to earn your medals and claim the Floor Fighter title.</p>
 </header>
 
 <div class="leader-grid">
-    <!-- POWER GYM ALBUM -->
-    <div class="leader-card card-power" id="gym-power">
-        <div class="main-display">
-            <img id="power-main" src="leaders/power1.jpg" alt="Current Leader">
-        </div>
-        
-        <!-- Album Thumbnails -->
-        <div class="album-bar">
-            <img class="thumb active" src="leaders/power1.jpg" onclick="updateLeader('power', 'Ignition', 'Master of Airflares.', this)">
-            <img class="thumb" src="leaders/power2.jpg" onclick="updateLeader('power', 'Voltage', 'High-speed headspins specialist.', this)">
-            <img class="thumb" src="leaders/power3.jpg" onclick="updateLeader('power', 'Crush', 'Heavyweight power move expert.', this)">
-            <!-- Add up to 10 here -->
-        </div>
 
+    <!-- POWER LEADER -->
+    <div class="leader-card card-power">
+        <div class="leader-img-box">
+            <img src="https://placeholder.com" alt="Power Leader">
+        </div>
         <div class="leader-info">
-            <span class="l-gym">Power Gym</span>
-            <span class="l-name" id="power-name">Ignition</span>
-            <p class="l-desc" id="power-desc">Master of high-flying Airflares and explosive power moves.</p>
+            <span class="leader-name">Ignition</span>
+            <span class="gym-type" style="color: var(--power-color);">Power Gym</span>
+            <div class="leader-desc">Master of high-flying Airflares and explosive power moves. Known for raw strength and unmatched verticality.</div>
         </div>
     </div>
 
-    <!-- STYLE GYM ALBUM -->
-    <div class="leader-card card-style" id="gym-style">
-        <div class="main-display">
-            <img id="style-main" src="leaders/style1.jpg" alt="Current Leader">
+    <!-- STYLE LEADER -->
+    <div class="leader-card card-style">
+        <div class="leader-img-box">
+            <img src="https://placeholder.com" alt="Style Leader">
         </div>
-        
-        <div class="album-bar">
-            <img class="thumb active" src="leaders/style1.jpg" onclick="updateLeader('style', 'Vibe', 'Intricate thread specialist.', this)">
-            <img class="thumb" src="leaders/style2.jpg" onclick="updateLeader('style', 'Flow', 'Rhythmic footwork master.', this)">
-        </div>
-
         <div class="leader-info">
-            <span class="l-gym" style="color: var(--style-color);">Style Gym</span>
-            <span class="l-name" id="style-name">Vibe</span>
-            <p class="l-desc" id="style-desc">Elegance meets the floor. Specializes in high-concept rhythmic combos.</p>
+            <span class="leader-name">Vibe</span>
+            <span class="gym-type" style="color: var(--style-color);">Style Gym</span>
+            <div class="leader-desc">Elegance meets the floor. Specializes in intricate threads and high-concept rhythmic combos.</div>
         </div>
     </div>
+
+    <!-- FOOTWORK LEADER -->
+    <div class="leader-card card-footwork">
+        <div class="leader-img-box">
+            <img src="https://placeholder.com" alt="Footwork Leader">
+        </div>
+        <div class="leader-info">
+            <span class="leader-name">Pattern</span>
+            <span class="gym-type" style="color: var(--footwork-color);">Footwork Gym</span>
+            <div class="leader-desc">The floor is their canvas. Fastest steps in the world, specialized in 6-step and Zulu spin patterns.</div>
+        </div>
+    </div>
+
+    <!-- FREEZE LEADER -->
+    <div class="leader-card card-freeze">
+        <div class="leader-img-box">
+            <img src="https://placeholder.com" alt="Freeze Leader">
+        </div>
+        <div class="leader-info">
+            <span class="leader-name">Absolute</span>
+            <span class="gym-type" style="color: var(--freeze-color);">Freeze Gym</span>
+            <div class="leader-desc">Time stops when they hit a pose. Famous for gravity-defying Airbabies and one-handed stacks.</div>
+        </div>
+    </div>
+
+    <!-- SPIN LEADER -->
+    <div class="leader-card card-spin">
+        <div class="leader-img-box">
+            <img src="https://placeholder.com" alt="Spin Leader">
+        </div>
+        <div class="leader-info">
+            <span class="leader-name">Cyclone</span>
+            <span class="gym-type" style="color: var(--spin-color);">Spin Gym</span>
+            <div class="leader-desc">Unstoppable momentum. Holds the record for continuous headspins and windmill revolutions.</div>
+        </div>
+    </div>
+
+    <!-- TOPROCK LEADER -->
+    <div class="leader-card card-toprock">
+        <div class="leader-img-box">
+            <img src="https://placeholder.com" alt="Toprock Leader">
+        </div>
+        <div class="leader-info">
+            <span class="leader-name">Stance</span>
+            <span class="gym-type" style="color: var(--toprock-color);">Toprock Gym</span>
+            <div class="leader-desc">Victory is won before the floor is even touched. Master of Indian Steps and Bronx Rock style.</div>
+        </div>
+    </div>
+
+    <!-- LEGACY LEADER -->
+    <div class="leader-card card-legacy">
+        <div class="leader-img-box">
+            <img src="https://placeholder.com" alt="Legacy Leader">
+        </div>
+        <div class="leader-info">
+            <span class="leader-name">Foundation</span>
+            <span class="gym-type" style="color: var(--legacy-color);">Legacy Gym</span>
+            <div class="leader-desc">The keeper of the old ways. Master of original 80s techniques and the core B-Boy spirit.</div>
+        </div>
+    </div>
+
 </div>
 
-<script>
-    function updateLeader(gymId, name, desc, thumbElement) {
-        // Update Image
-        document.getElementById(gymId + '-main').src = thumbElement.src;
-        // Update Text
-        document.getElementById(gymId + '-name').innerText = name;
-        document.getElementById(gymId + '-desc').innerText = desc;
-        
-        // Update Active Thumbnail State
-        let thumbs = thumbElement.parentElement.getElementsByClassName('thumb');
-        for (let t of thumbs) t.classList.remove('active');
-        thumbElement.classList.add('active');
-    }
-</script>
+<footer>
+    <p style="text-align: center; margin-top: 50px; color: #444;">Floor Fighter Tournament &copy; 2026</p>
+</footer>
 
 </body>
 </html>
