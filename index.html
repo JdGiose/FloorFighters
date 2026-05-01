@@ -162,8 +162,8 @@
         <a href="gym-leaders.html" class="nav-link">Gym Leaders</a>
         <a href="gallery.html" class="nav-link">Gallery</a>
         <a href="contact.html" class="nav-link">Contact</a>
-        
-      <!-- TOGGLEABLE TABS -->
+
+        <!-- TOGGLEABLE TABS -->
         <a id="signin-btn" class="nav-link" href="#" onclick="handleSignIn(); return false;">Sign In</a>
         <a href="members.html" id="members-tab" class="nav-link">Members</a>
         <a id="sign-out-btn" class="nav-link" href="#" onclick="handleSignOut(); return false;">Sign Out</a>
@@ -225,63 +225,92 @@
     </footer>
 </div>
 
-<!-- Supabase client -->
+<!-- ✅ FIX: Load Supabase first, then run all auth logic inside window.onload -->
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
 <script>
-const supabaseUrl = 'https://ytvscznqokavsgrbhrgf.supabase.co';
-const supabaseKey = 'sb_publishable_eBNJuaN7oZoQJOglw5IBdg_mGlqZFmc';
+// 🔐 Supabase config
+const SUPABASE_URL = 'https://ytvscznqokavsgrbhrgf.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_eBNJuaN7oZoQJOglw5IBdg_mGlqZFmc';
+// ⚠️  NOTE: If sign-in still fails, double-check this key in your Supabase dashboard
+//     under Project Settings → API → anon/public. It should start with "eyJ..."
 
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+let supabase; // declared here so handleSignIn/handleSignOut can access it
 
-async function handleSignIn() {
-    const userEmail = prompt('Enter your email to sign in:');
-    if (!userEmail) return;
+// ✅ FIX: Everything runs AFTER the page (and the CDN script) has fully loaded
+window.addEventListener('load', function () {
 
-    // The redirect URL MUST match your dashboard screenshot exactly
-    const { error } = await supabase.auth.signInWithOtp({
-        email: userEmail,
-        options: {
-            emailRedirectTo: 'https://jdgiose.github.io/FloorFighters'
-        }
-    });
+  // Guard: make sure Supabase library actually loaded
+  if (!window.supabase) {
+    console.error('Supabase library failed to load. Check your internet connection.');
+    return;
+  }
 
-    if (error) {
-        console.error('Login error:', error.message);
-        alert('Supabase Error: ' + error.message);
-    } else {
-        alert('Check your email for the magic link!');
-    }
-}
+  supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-async function handleSignOut() {
-    const { error } = await supabase.auth.signOut();
-    if (error) console.error('Sign out error:', error.message);
-}
-
-async function updateNav() {
-    const signInBtn = document.getElementById('signin-btn');
-    const membersTab = document.getElementById('members-tab');
-    const signOutBtn = document.getElementById('sign-out-btn');
-
-    const { data: { session } } = await supabase.auth.getSession();
-
-    if (session) {
-        signInBtn.style.display = 'none';
-        membersTab.style.display = 'block';
-        signOutBtn.style.display = 'block';
-    } else {
-        signInBtn.style.display = 'block';
-        membersTab.style.display = 'none';
-        signOutBtn.style.display = 'none';
-    }
-}
-
-supabase.auth.onAuthStateChange(() => {
+  // 🔔 Listen for auth state changes (login via magic link redirect, sign out, etc.)
+  supabase.auth.onAuthStateChange((_event, _session) => {
     updateNav();
+  });
+
+  // 🚀 Set nav correctly on initial page load
+  updateNav();
 });
 
-document.addEventListener('DOMContentLoaded', updateNav);
+// 🔄 NAV DISPLAY
+async function updateNav() {
+  const signInBtn  = document.getElementById('signin-btn');
+  const membersTab = document.getElementById('members-tab');
+  const signOutBtn = document.getElementById('sign-out-btn');
+
+  if (!supabase) return; // library not ready yet
+
+  const { data: { session } } = await supabase.auth.getSession();
+
+  if (session) {
+    signInBtn.style.display  = 'none';
+    membersTab.style.display = 'block';
+    signOutBtn.style.display = 'block';
+  } else {
+    signInBtn.style.display  = 'block';
+    membersTab.style.display = 'none';
+    signOutBtn.style.display = 'none';
+  }
+}
+
+// 🔑 SIGN IN
+async function handleSignIn() {
+  if (!supabase) { alert('Auth not ready yet, please try again.'); return; }
+
+  const userEmail = prompt('Enter your email to sign in:');
+  if (!userEmail) return;
+
+  const { error } = await supabase.auth.signInWithOtp({
+    email: userEmail,
+    options: {
+      emailRedirectTo: 'https://jdgiose.github.io/FloorFighters'
+    }
+  });
+
+  if (error) {
+    console.error('Login error:', error.message);
+    alert('Error sending magic link: ' + error.message);
+  } else {
+    alert('Magic link sent! Check your email and click the link to sign in.');
+  }
+}
+
+// 🔑 SIGN OUT
+async function handleSignOut() {
+  if (!supabase) return;
+
+  const { error } = await supabase.auth.signOut();
+  if (error) {
+    console.error('Sign out error:', error.message);
+  } else {
+    updateNav();
+  }
+}
 </script>
 
 </body>
