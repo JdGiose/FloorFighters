@@ -239,16 +239,22 @@ const supabaseKey = 'sb_publishable_eBNJuaN7oZoQJOglw5IBdg_mGlqZFmc';
   );
 
   // 🔑 SIGN IN / SIGN OUT (replaces handleAuth completely)
-  async function handleAuth() {
+ async function handleSignIn() {
   const userEmail = prompt('Enter your email to sign in:');
-
   if (!userEmail) return;
 
   await supabase.auth.signInWithOtp({
-    email: userEmail
+    email: userEmail,
+    options: {
+      emailRedirectTo: window.location.href
+    }
   });
 
-  alert('Check your email for the sign-in link.');
+  alert('Check your email for the magic link.');
+}
+
+async function handleSignOut() {
+  await supabase.auth.signOut();
 }
 
   // 🔄 NAV DISPLAY (replaces updateNav)
