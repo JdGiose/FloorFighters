@@ -231,25 +231,37 @@
 <script>
 // 🔐 Supabase config
 const SUPABASE_URL = 'https://ytvscznqokavsgrbhrgf.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_eBNJuaN7oZoQJOglw5IBdg_mGlqZFmc';
-// ⚠️  NOTE: If sign-in still fails, double-check this key in your Supabase dashboard
-//     under Project Settings → API → anon/public. It should start with "eyJ..."
+// ⚠️  REPLACE THIS with your real anon/public key from:
+//     Supabase Dashboard → Project Settings → API → anon / public
+//     It must start with "eyJ..."
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl0dnNjem5xb2thdnNncmJocmdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1NTExMTUsImV4cCI6MjA5MzEyNzExNX0.CO5JJvmo1qbVwEsUWTfsDZ0XU9WNPsPpbBS4VbHishA';
 
-let supabase; // declared here so handleSignIn/handleSignOut can access it
+let supabase;
 
-// ✅ FIX: Everything runs AFTER the page (and the CDN script) has fully loaded
 window.addEventListener('load', function () {
 
-  // Guard: make sure Supabase library actually loaded
   if (!window.supabase) {
-    console.error('Supabase library failed to load. Check your internet connection.');
+    console.error('Supabase library failed to load.');
     return;
   }
 
-  supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+    auth: {
+      // Tells Supabase to detect the #access_token=... hash in the URL
+      // that magic links redirect back with, and exchange it for a session
+      detectSessionInUrl: true,
+      persistSession: true,
+      autoRefreshToken: true,
+    }
+  });
 
-  // 🔔 Listen for auth state changes (login via magic link redirect, sign out, etc.)
-  supabase.auth.onAuthStateChange((_event, _session) => {
+  // 🔔 This fires when the magic-link hash is detected and a session is created
+  supabase.auth.onAuthStateChange((event, session) => {
+    console.log('Auth event:', event, session);
+    // Once the session is established, clean up the ugly hash from the URL
+    if (event === 'SIGNED_IN' && window.location.hash) {
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
     updateNav();
   });
 
