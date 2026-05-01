@@ -164,23 +164,9 @@
         <a href="contact.html" class="nav-link">Contact</a>
         
       <!-- TOGGLEABLE TABS -->
-<a id="signin-btn"
-   class="nav-link"
-   href="#"
-   onclick="handleSignIn(); return false;">
-  Sign In
-</a>
-
-<a href="members.html" id="members-tab" class="nav-link">
-  Members
-</a>
-
-<a id="sign-out-btn"
-   class="nav-link"
-   href="#"
-   onclick="handleSignOut(); return false;">
-  Sign Out
-</a>
+        <a id="signin-btn" class="nav-link" href="#" onclick="handleSignIn(); return false;">Sign In</a>
+        <a href="members.html" id="members-tab" class="nav-link">Members</a>
+        <a id="sign-out-btn" class="nav-link" href="#" onclick="handleSignOut(); return false;">Sign Out</a>
     </div>
 </nav>
 
@@ -239,47 +225,41 @@
     </footer>
 </div>
 
-<!-- Supabase client (must be first) -->
+<!-- Supabase client -->
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
 <script>
-// 🔐 Supabase config
 const supabaseUrl = 'https://ytvscznqokavsgrbhrgf.supabase.co';
 const supabaseKey = 'sb_publishable_eBNJuaN7oZoQJOglw5IBdg_mGlqZFmc';
 
-  const supabase = window.supabase.createClient(
-    supabaseUrl,
-    supabaseKey
-  );
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-  // 🔑 SIGN IN / SIGN OUT
 async function handleSignIn() {
-  const userEmail = prompt('Enter your email to sign in:');
-  if (!userEmail) return;
+    const userEmail = prompt('Enter your email to sign in:');
+    if (!userEmail) return;
 
-  // Optimized to match Site URL in image_5b2538.png
-  const { error } = await supabase.auth.signInWithOtp({
-    email: userEmail,
-    options: {
-      emailRedirectTo: 'https://jdgiose.github.io/FloorFighters'
+    // The redirect URL MUST match your dashboard screenshot exactly
+    const { error } = await supabase.auth.signInWithOtp({
+        email: userEmail,
+        options: {
+            emailRedirectTo: 'https://jdgiose.github.io/FloorFighters'
+        }
+    });
+
+    if (error) {
+        console.error('Login error:', error.message);
+        alert('Supabase Error: ' + error.message);
+    } else {
+        alert('Check your email for the magic link!');
     }
-  });
-
-  if (error) {
-    console.error('Login error:', error.message);
-    alert('Error sending magic link: ' + error.message);
-  } else {
-    alert('Check your email for the magic link.');
-  }
 }
 
 async function handleSignOut() {
-  const { error } = await supabase.auth.signOut();
-  if (error) console.error('Sign out error:', error.message);
+    const { error } = await supabase.auth.signOut();
+    if (error) console.error('Sign out error:', error.message);
 }
 
-  // 🔄 NAV DISPLAY
-  async function updateNav() {
+async function updateNav() {
     const signInBtn = document.getElementById('signin-btn');
     const membersTab = document.getElementById('members-tab');
     const signOutBtn = document.getElementById('sign-out-btn');
@@ -287,23 +267,21 @@ async function handleSignOut() {
     const { data: { session } } = await supabase.auth.getSession();
 
     if (session) {
-      signInBtn.style.display = 'none';
-      membersTab.style.display = 'block';
-      signOutBtn.style.display = 'block';
+        signInBtn.style.display = 'none';
+        membersTab.style.display = 'block';
+        signOutBtn.style.display = 'block';
     } else {
-      signInBtn.style.display = 'block';
-      membersTab.style.display = 'none';
-      signOutBtn.style.display = 'none';
+        signInBtn.style.display = 'block';
+        membersTab.style.display = 'none';
+        signOutBtn.style.display = 'none';
     }
-  }
+}
 
-  // 🔔 Listen for auth changes
-  supabase.auth.onAuthStateChange(() => {
+supabase.auth.onAuthStateChange(() => {
     updateNav();
-  });
+});
 
-  // 🚀 Initial load
-  document.addEventListener('DOMContentLoaded', updateNav);
+document.addEventListener('DOMContentLoaded', updateNav);
 </script>
 
 </body>
