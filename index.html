@@ -240,18 +240,16 @@ const supabaseKey = 'sb_publishable_eBNJuaN7oZoQJOglw5IBdg_mGlqZFmc';
 
   // 🔑 SIGN IN / SIGN OUT (replaces handleAuth completely)
   async function handleAuth() {
-    const { data: { session } } = await supabase.auth.getSession();
+  const userEmail = prompt('Enter your email to sign in:');
 
-    if (session) {
-      await supabase.auth.signOut();
-      alert('Signed out of Tournament Network.');
-    } else {
-      await supabase.auth.signInWithOAuth({
-        provider: 'google'
-      });
-      // redirect handled by Supabase
-    }
-  }
+  if (!userEmail) return;
+
+  await supabase.auth.signInWithOtp({
+    email: userEmail
+  });
+
+  alert('Check your email for the sign-in link.');
+}
 
   // 🔄 NAV DISPLAY (replaces updateNav)
   async function updateNav() {
