@@ -258,12 +258,13 @@ async function handleSignIn() {
   if (!userEmail) return;
 
   // Optimized to match Site URL in image_5b2538.png
-  const { error } = await supabase.auth.signInWithOtp({
-    email: userEmail,
-    options: {
-      emailRedirectTo: 'https://jdgiose.github.io/FloorFighters'
-    }
-  });
+  const { error } = await supabaseClient.auth.signInWithOtp({
+  email: userEmail,
+  options: {
+    emailRedirectTo: 'https://jdgiose.github.io/FloorFighters'
+  }
+});
+
 
   if (error) {
     console.error('Login error:', error.message);
@@ -274,7 +275,7 @@ async function handleSignIn() {
 }
 
 async function handleSignOut() {
-  const { error } = await supabase.auth.signOut();
+  const { error } = await supabaseClient.auth.signOut();
   if (error) console.error('Sign out error:', error.message);
 }
 
@@ -284,7 +285,7 @@ async function handleSignOut() {
     const membersTab = document.getElementById('members-tab');
     const signOutBtn = document.getElementById('sign-out-btn');
 
-    const { data: { session } } = await supabase.auth.getSession();
+    const { data: { session } } = await supabaseClient.auth.getSession();
 
     if (session) {
       signInBtn.style.display = 'none';
@@ -298,9 +299,9 @@ async function handleSignOut() {
   }
 
   // 🔔 Listen for auth changes
-  supabase.auth.onAuthStateChange(() => {
-    updateNav();
-  });
+  supabaseClient.auth.onAuthStateChange(() => {
+  updateNav();
+});
 
   // 🚀 Initial load
   document.addEventListener('DOMContentLoaded', updateNav);
