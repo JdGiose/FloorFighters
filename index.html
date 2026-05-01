@@ -12,37 +12,149 @@
             --accent-gold: #ffd700;
             --text-gray: #bbb;
         }
-        body { background-color: var(--dark-bg); color: #fff; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 0; line-height: 1.6; }
-        nav { background: #000; border-bottom: 1px solid #222; padding: 15px 0; position: sticky; top: 0; z-index: 1000; }
-        .nav-container { max-width: 1000px; margin: 0 auto; display: flex; justify-content: center; gap: 30px; align-items: center; }
-        .nav-link { color: var(--text-gray); text-decoration: none; text-transform: uppercase; font-size: 0.85rem; font-weight: bold; letter-spacing: 1px; transition: 0.3s; cursor: pointer; }
-        .nav-link:hover { color: var(--neon-red); }
+
+        body {
+            background-color: var(--dark-bg);
+            color: #fff;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* NAVIGATION BAR */
+        nav {
+            background: #000;
+            border-bottom: 1px solid #222;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-gray);
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            color: var(--neon-red);
+        }
+
+        /* Conditional Tab Styling */
         #members-tab { display: none; color: var(--accent-gold); }
         #sign-out-btn { display: none; font-size: 10px; border: 1px solid #333; padding: 4px 8px; border-radius: 4px; }
-        .container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
-        header { text-align: center; border-bottom: 3px solid var(--neon-red); padding-bottom: 40px; margin-bottom: 50px; }
-        h1 { font-size: 3.5rem; text-transform: uppercase; letter-spacing: 4px; margin: 0; color: #fff; text-shadow: 2px 2px 10px rgba(255, 0, 0, 0.5); }
-        .subtitle { font-size: 1.2rem; color: var(--text-gray); font-weight: 300; margin-top: 10px; }
-        section { margin-bottom: 60px; }
-        h2 { color: var(--neon-red); text-transform: uppercase; border-left: 5px solid var(--neon-red); padding-left: 15px; margin-bottom: 30px; font-size: 1.8rem; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
-        .card { background: var(--card-bg); padding: 25px; border-radius: 8px; border: 1px solid #333; transition: transform 0.3s ease; }
-        .card:hover { transform: translateY(-5px); border-color: var(--neon-red); }
-        .card h3 { margin-top: 0; color: var(--accent-gold); }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Header Style */
+        header {
+            text-align: center;
+            border-bottom: 3px solid var(--neon-red);
+            padding-bottom: 40px;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin: 0;
+            color: #fff;
+            text-shadow: 2px 2px 10px rgba(255, 0, 0, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            font-weight: 300;
+            margin-top: 10px;
+        }
+
+        /* Section Styling */
+        section {
+            margin-bottom: 60px;
+        }
+
+        h2 {
+            color: var(--neon-red);
+            text-transform: uppercase;
+            border-left: 5px solid var(--neon-red);
+            padding-left: 15px;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--neon-red);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: var(--accent-gold);
+        }
+
+        /* Progression Steps */
         .steps { list-style: none; padding: 0; }
-        .step-item { display: flex; align-items: center; background: #111; margin-bottom: 15px; padding: 15px; border-radius: 4px; border-left: 4px solid var(--accent-gold); }
+        .step-item {
+            display: flex;
+            align-items: center;
+            background: #111;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 4px;
+            border-left: 4px solid var(--accent-gold);
+        }
         .step-item span { font-size: 1.5rem; font-weight: bold; margin-right: 20px; color: var(--accent-gold); }
+
+        /* Call to Action Buttons */
         .cta-container { display: flex; gap: 20px; justify-content: center; margin-top: 40px; }
         .btn { padding: 15px 30px; text-decoration: none; font-weight: bold; text-transform: uppercase; border-radius: 4px; transition: 0.3s; text-align: center; }
         .btn-primary { background-color: var(--neon-red); color: #fff; }
         .btn-primary:hover { background-color: #cc0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.4); }
         .btn-secondary { border: 2px solid var(--accent-gold); color: var(--accent-gold); }
         .btn-secondary:hover { background: var(--accent-gold); color: #000; }
+
         footer { text-align: center; padding: 40px; font-size: 0.9rem; color: #555; }
     </style>
 </head>
 <body>
 
+<!-- NAVIGATION BAR -->
 <nav>
     <div class="nav-container">
         <a href="index.html" class="nav-link">Home</a>
@@ -50,15 +162,25 @@
         <a href="gym-leaders.html" class="nav-link">Gym Leaders</a>
         <a href="gallery.html" class="nav-link">Gallery</a>
         <a href="contact.html" class="nav-link">Contact</a>
+        
+      <!-- TOGGLEABLE TABS -->
+<a id="signin-btn"
+   class="nav-link"
+   href="#"
+   onclick="handleSignIn(); return false;">
+  Sign In
+</a>
 
-        <!-- INPUT BOX FOR EMAIL -->
-        <div id="signin-section" style="display: flex; gap: 10px; align-items: center;">
-            <input type="email" id="user-email" placeholder="Email" style="padding: 5px; border-radius: 4px; border: 1px solid #444; background: #111; color: white; font-size: 0.8rem; width: 140px;">
-            <a id="signin-btn" class="nav-link" onclick="handleSignIn()">Sign In</a>
-        </div>
+<a href="members.html" id="members-tab" class="nav-link">
+  Members
+</a>
 
-        <a href="members.html" id="members-tab" class="nav-link">Members</a>
-        <a id="sign-out-btn" class="nav-link" onclick="handleSignOut()">Sign Out</a>
+<a id="sign-out-btn"
+   class="nav-link"
+   href="#"
+   onclick="handleSignOut(); return false;">
+  Sign Out
+</a>
     </div>
 </nav>
 
@@ -72,9 +194,18 @@
     <section id="concept">
         <h2>Game Concept</h2>
         <div class="grid">
-            <div class="card"><h3>Master the Arsenal</h3><p>There are over 100 moves to master, from fundamental Toprocks to gravity-defying Power Moves.</p></div>
-            <div class="card"><h3>Explore the Gyms</h3><p>The world is divided into Gyms, each specializing in a unique set of moves. Prove your skill to unlock them.</p></div>
-            <div class="card"><h3>Challenge the Elite</h3><p>Gym Leaders know all the moves—defeat them to earn a medal and move one step closer to the championship.</p></div>
+            <div class="card">
+                <h3>Master the Arsenal</h3>
+                <p>There are over 100 moves to master, from fundamental Toprocks to gravity-defying Power Moves.</p>
+            </div>
+            <div class="card">
+                <h3>Explore the Gyms</h3>
+                <p>The world is divided into Gyms, each specializing in a unique set of moves. Prove your skill to unlock them.</p>
+            </div>
+            <div class="card">
+                <h3>Challenge the Elite</h3>
+                <p>Gym Leaders know all the moves—defeat them to earn a medal and move one step closer to the championship.</p>
+            </div>
         </div>
     </section>
 
@@ -90,86 +221,89 @@
     <section id="battle-system" style="background: #111; padding: 30px; border-radius: 8px; border: 1px solid #333;">
         <h2 style="border:none; padding:0;">Battle System</h2>
         <p>Before entering a gym battle, use our dedicated system to validate your move set and confirm your eligibility. If you meet the criteria, you can challenge the Gym Leader in a real-time dance battle.</p>
-        <div class="cta-container"><a href="battle-system.html" class="btn btn-primary">Enter Battle System</a></div>
+        <div class="cta-container">
+            <a href="battle-system.html" class="btn btn-primary">Enter Battle System</a>
+        </div>
     </section>
 
     <section id="guide">
         <h2>The Battle Guide</h2>
         <p>Master the training plans, move sets, and battle strategies required to defeat every Gym Leader in the world. The guide is your key to mastering high-score combos.</p>
-        <div class="cta-container"><a href="#" onclick="alert('Payment Gateway Loading...'); return false;" class="btn btn-secondary">Download Battle Guide (PDF)</a></div>
+        <div class="cta-container">
+            <a href="#" onclick="alert('Payment Gateway Loading...'); return false;" class="btn btn-secondary">Download Battle Guide (PDF)</a>
+        </div>
     </section>
 
-    <footer>&copy; 2026 Floor Fighter Tournament. All rights reserved.</footer>
+    <footer>
+        &copy; 2023 Floor Fighter Tournament. All rights reserved.
+    </footer>
 </div>
 
+<!-- Supabase client (must be first) -->
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script>
-  const supabaseUrl = 'https://ytvscznqokavsgrbhrgf.supabase.co';
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl0dnNjem5xb2thdnNncmJocmdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1NTExMTUsImV4cCI6MjA5MzEyNzExNX0.CO5JJvmo1qbVwEsUWTfsDZ0XU9WNPsPpbBS4VbHishA';
 
-  const supabase = window.supabase.createClient(supabaseUrl, supabaseKey, {
-    auth: {
-      detectSessionInUrl: true,
-      persistSession: true,
-      autoRefreshToken: true,
+<script>
+// 🔐 Supabase config
+const supabaseUrl = 'https://ytvscznqokavsgrbhrgf.supabase.co';
+const supabaseKey = 'sb_publishable_eBNJuaN7oZoQJOglw5IBdg_mGlqZFmc';
+
+  const supabase = window.supabase.createClient(
+    supabaseUrl,
+    supabaseKey
+  );
+
+  // 🔑 SIGN IN / SIGN OUT
+async function handleSignIn() {
+  const userEmail = prompt('Enter your email to sign in:');
+  if (!userEmail) return;
+
+  // Optimized to match Site URL in image_5b2538.png
+  const { error } = await supabase.auth.signInWithOtp({
+    email: userEmail,
+    options: {
+      emailRedirectTo: 'https://jdgiose.github.io/FloorFighters'
     }
   });
 
-  supabase.auth.onAuthStateChange((event, session) => {
-    console.log('Auth event:', event, session);
-    if (event === 'SIGNED_IN' && window.location.hash) {
-      history.replaceState(null, '', window.location.pathname + window.location.search);
+  if (error) {
+    console.error('Login error:', error.message);
+    alert('Error sending magic link: ' + error.message);
+  } else {
+    alert('Check your email for the magic link.');
+  }
+}
+
+async function handleSignOut() {
+  const { error } = await supabase.auth.signOut();
+  if (error) console.error('Sign out error:', error.message);
+}
+
+  // 🔄 NAV DISPLAY
+  async function updateNav() {
+    const signInBtn = document.getElementById('signin-btn');
+    const membersTab = document.getElementById('members-tab');
+    const signOutBtn = document.getElementById('sign-out-btn');
+
+    const { data: { session } } = await supabase.auth.getSession();
+
+    if (session) {
+      signInBtn.style.display = 'none';
+      membersTab.style.display = 'block';
+      signOutBtn.style.display = 'block';
+    } else {
+      signInBtn.style.display = 'block';
+      membersTab.style.display = 'none';
+      signOutBtn.style.display = 'none';
     }
+  }
+
+  // 🔔 Listen for auth changes
+  supabase.auth.onAuthStateChange(() => {
     updateNav();
   });
 
-  window.addEventListener('load', updateNav);
-
-  async function updateNav() {
-    const signinSection = document.getElementById('signin-section');
-    const membersTab = document.getElementById('members-tab');
-    const signOutBtn = document.getElementById('sign-out-btn');
-    
-    const { data: { session } } = await supabase.auth.getSession();
-    
-    if (session) {
-      signinSection.style.display = 'none';
-      membersTab.style.display    = 'block';
-      signOutBtn.style.display    = 'block';
-    } else {
-      signinSection.style.display = 'flex';
-      membersTab.style.display    = 'none';
-      signOutBtn.style.display    = 'none';
-    }
-  }
-
-  async function handleSignIn() {
-    const emailField = document.getElementById('user-email');
-    const userEmail = emailField.value;
-
-    if (!userEmail) {
-      alert('Please enter your email in the box next to the sign-in button!');
-      return;
-    }
-
-    console.log('Magic link request for:', userEmail);
-
-    const { error } = await supabase.auth.signInWithOtp({
-      email: userEmail,
-      options: { emailRedirectTo: 'https://jdgiose.github.io/FloorFighters' }
-    });
-
-    if (error) {
-      alert('Error: ' + error.message);
-    } else {
-      alert('Magic link sent to ' + userEmail + '! Check your email.');
-    }
-  }
-
-  async function handleSignOut() {
-    const { error } = await supabase.auth.signOut();
-    if (!error) updateNav();
-  }
+  // 🚀 Initial load
+  document.addEventListener('DOMContentLoaded', updateNav);
 </script>
 
 </body>
