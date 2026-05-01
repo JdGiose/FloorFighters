@@ -4,101 +4,264 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Floor Fighter | Breakdance Tournament</title>
-    <!-- FIXED: Correct Supabase Library Link -->
-    <script src="https://jsdelivr.net"></script>
     <style>
-        :root { --neon-red: #ff0000; --dark-bg: #0a0a0a; --card-bg: #1a1a1a; --accent-gold: #ffd700; --text-gray: #bbb; }
-        body { background-color: var(--dark-bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; line-height: 1.6; }
-        nav { background: #000; border-bottom: 1px solid #222; padding: 15px 0; position: sticky; top: 0; z-index: 1000; }
-        .nav-container { max-width: 1000px; margin: 0 auto; display: flex; justify-content: center; gap: 30px; align-items: center; }
-        .nav-link { color: var(--text-gray); text-decoration: none; text-transform: uppercase; font-size: 0.85rem; font-weight: bold; cursor: pointer; }
-        .nav-link:hover { color: var(--neon-red); }
-        #members-tab, #sign-out-btn { display: none; }
-        #members-tab { color: var(--accent-gold); }
-        .container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
-        header { text-align: center; border-bottom: 3px solid var(--neon-red); padding-bottom: 40px; margin-bottom: 50px; }
-        h1 { font-size: 3.5rem; text-transform: uppercase; letter-spacing: 4px; margin: 0; text-shadow: 2px 2px 10px rgba(255, 0, 0, 0.5); }
-        section { margin-bottom: 60px; }
-        h2 { color: var(--neon-red); text-transform: uppercase; border-left: 5px solid var(--neon-red); padding-left: 15px; margin-bottom: 30px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
-        .card { background: var(--card-bg); padding: 25px; border-radius: 8px; border: 1px solid #333; }
+        :root {
+            --neon-red: #ff0000;
+            --dark-bg: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --accent-gold: #ffd700;
+            --text-gray: #bbb;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: #fff;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* NAVIGATION BAR */
+        nav {
+            background: #000;
+            border-bottom: 1px solid #222;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-gray);
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            color: var(--neon-red);
+        }
+
+        /* Conditional Tab Styling */
+        #members-tab { display: none; color: var(--accent-gold); }
+        #sign-out-btn { display: none; font-size: 10px; border: 1px solid #333; padding: 4px 8px; border-radius: 4px; }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Header Style */
+        header {
+            text-align: center;
+            border-bottom: 3px solid var(--neon-red);
+            padding-bottom: 40px;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin: 0;
+            color: #fff;
+            text-shadow: 2px 2px 10px rgba(255, 0, 0, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            font-weight: 300;
+            margin-top: 10px;
+        }
+
+        /* Section Styling */
+        section {
+            margin-bottom: 60px;
+        }
+
+        h2 {
+            color: var(--neon-red);
+            text-transform: uppercase;
+            border-left: 5px solid var(--neon-red);
+            padding-left: 15px;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--neon-red);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: var(--accent-gold);
+        }
+
+        /* Progression Steps */
         .steps { list-style: none; padding: 0; }
-        .step-item { display: flex; align-items: center; background: #111; margin-bottom: 15px; padding: 15px; border-radius: 4px; border-left: 4px solid var(--accent-gold); }
+        .step-item {
+            display: flex;
+            align-items: center;
+            background: #111;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 4px;
+            border-left: 4px solid var(--accent-gold);
+        }
         .step-item span { font-size: 1.5rem; font-weight: bold; margin-right: 20px; color: var(--accent-gold); }
+
+        /* Call to Action Buttons */
         .cta-container { display: flex; gap: 20px; justify-content: center; margin-top: 40px; }
-        .btn { padding: 15px 30px; text-decoration: none; font-weight: bold; text-transform: uppercase; border-radius: 4px; text-align: center; }
+        .btn { padding: 15px 30px; text-decoration: none; font-weight: bold; text-transform: uppercase; border-radius: 4px; transition: 0.3s; text-align: center; }
         .btn-primary { background-color: var(--neon-red); color: #fff; }
+        .btn-primary:hover { background-color: #cc0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.4); }
         .btn-secondary { border: 2px solid var(--accent-gold); color: var(--accent-gold); }
+        .btn-secondary:hover { background: var(--accent-gold); color: #000; }
+
+        footer { text-align: center; padding: 40px; font-size: 0.9rem; color: #555; }
     </style>
 </head>
 <body>
 
+<!-- NAVIGATION BAR -->
 <nav>
     <div class="nav-container">
         <a href="index.html" class="nav-link">Home</a>
-        <a href="battlesystem.html" class="nav-link">Battle System</a>
-        <a href="gymleaders.html" class="nav-link">Gym Leaders</a>
+        <a href="battle-system.html" class="nav-link">Battle System</a>
+        <a href="gym-leaders.html" class="nav-link">Gym Leaders</a>
         <a href="gallery.html" class="nav-link">Gallery</a>
-        <a id="signin-btn" class="nav-link" onclick="handleSignIn()">Sign In</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+        
+        <!-- TOGGLEABLE TABS -->
+        <a id="signin-btn" class="nav-link" onclick="handleAuth()">Sign In</a>
         <a href="members.html" id="members-tab" class="nav-link">Members</a>
-        <a id="sign-out-btn" class="nav-link" onclick="handleSignOut()">Sign Out</a>
+        <a id="sign-out-btn" class="nav-link" onclick="handleAuth()">Sign Out</a>
     </div>
 </nav>
 
 <div class="container">
     <header>
         <h1>Floor Fighter</h1>
-        <p>The Ultimate Breakdance Tournament</p>
+        <div class="subtitle">The Ultimate Breakdance Tournament</div>
+        <p>Welcome to Floor Fighter, the competitive breakdance experience where skill, strategy, and style collide.</p>
     </header>
 
     <section id="concept">
         <h2>Game Concept</h2>
         <div class="grid">
-            <div class="card"><h3>Master the Arsenal</h3><p>Over 100 moves to master.</p></div>
-            <div class="card"><h3>Explore the Gyms</h3><p>Prove your skill to unlock unique sets.</p></div>
-            <div class="card"><h3>Challenge Leaders</h3><p>Defeat the elite to earn medals.</p></div>
+            <div class="card">
+                <h3>Master the Arsenal</h3>
+                <p>There are over 100 moves to master, from fundamental Toprocks to gravity-defying Power Moves.</p>
+            </div>
+            <div class="card">
+                <h3>Explore the Gyms</h3>
+                <p>The world is divided into Gyms, each specializing in a unique set of moves. Prove your skill to unlock them.</p>
+            </div>
+            <div class="card">
+                <h3>Challenge the Elite</h3>
+                <p>Gym Leaders know all the moves—defeat them to earn a medal and move one step closer to the championship.</p>
+            </div>
         </div>
     </section>
 
     <section id="progression">
         <h2>Progression Path</h2>
         <div class="steps">
-            <div class="step-item"><span>01</span> Start training basic moves.</div>
-            <div class="step-item"><span>02</span> Use Battle System to check eligibility.</div>
-            <div class="step-item"><span>03</span> Become the Floor Fighter Champion.</div>
+            <div class="step-item"><span>01</span> Start with basic moves and level up by training.</div>
+            <div class="step-item"><span>02</span> Use the Battle System to check eligibility and challenge Gym Leaders.</div>
+            <div class="step-item"><span>03</span> Collect medals from all gyms to become the Floor Fighter Champion.</div>
         </div>
     </section>
 
-    <div class="cta-container">
-        <a href="battlesystem.html" class="btn btn-primary">Enter Battle System</a>
-    </div>
+    <section id="battle-system" style="background: #111; padding: 30px; border-radius: 8px; border: 1px solid #333;">
+        <h2 style="border:none; padding:0;">Battle System</h2>
+        <p>Before entering a gym battle, use our dedicated system to validate your move set and confirm your eligibility. If you meet the criteria, you can challenge the Gym Leader in a real-time dance battle.</p>
+        <div class="cta-container">
+            <a href="battle-system.html" class="btn btn-primary">Enter Battle System</a>
+        </div>
+    </section>
+
+    <section id="guide">
+        <h2>The Battle Guide</h2>
+        <p>Master the training plans, move sets, and battle strategies required to defeat every Gym Leader in the world. The guide is your key to mastering high-score combos.</p>
+        <div class="cta-container">
+            <a href="#" onclick="alert('Payment Gateway Loading...'); return false;" class="btn btn-secondary">Download Battle Guide (PDF)</a>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2023 Floor Fighter Tournament. All rights reserved.
+    </footer>
 </div>
 
 <script>
-    // 1. Initialize Supabase - FIXED KEYS
-    const _sb = supabase.createClient('https://supabase.co', 'sb_publishable_ebHJuaN7oZoQJOglw5IBdg_mGlqZFmc');
+    const AUTH_KEY = 'floorFighterLoggedIn';
 
-    // 2. Sign In Function
-    async function handleSignIn() {
-        const { error } = await _sb.auth.signInWithOAuth({
-            provider: 'google',
-            options: { redirectTo: window.location.origin + window.location.pathname }
-        });
-        if (error) alert("Auth Error: " + error.message);
+    function handleAuth() {
+        const isLoggedIn = localStorage.getItem(AUTH_KEY) === 'true';
+        if (isLoggedIn) {
+            // Sign Out
+            localStorage.setItem(AUTH_KEY, 'false');
+            alert("Signed Out of Tournament Network.");
+        } else {
+            // Sign In
+            localStorage.setItem(AUTH_KEY, 'true');
+            alert("Welcome back, Challenger! Members area unlocked.");
+        }
+        updateNav();
     }
 
-    // 3. Sign Out Function
-    async function handleSignOut() {
-        await _sb.auth.signOut();
+    function updateNav() {
+        const isLoggedIn = localStorage.getItem(AUTH_KEY) === 'true';
+        const signInBtn = document.getElementById('signin-btn');
+        const membersTab = document.getElementById('members-tab');
+        const signOutBtn = document.getElementById('sign-out-btn');
+
+        if (isLoggedIn) {
+            signInBtn.style.display = 'none';
+            membersTab.style.display = 'block';
+            signOutBtn.style.display = 'block';
+        } else {
+            signInBtn.style.display = 'block';
+            membersTab.style.display = 'none';
+            signOutBtn.style.display = 'none';
+        }
     }
 
-    // 4. UI State Listener
-    _sb.auth.onAuthStateChange((event, session) => {
-        const user = session?.user;
-        document.getElementById('signin-btn').style.display = user ? 'none' : 'block';
-        document.getElementById('members-tab').style.display = user ? 'block' : 'none';
-        document.getElementById('sign-out-btn').style.display = user ? 'block' : 'none';
-    });
+    // Run on load
+    document.addEventListener('DOMContentLoaded', updateNav);
 </script>
+
 </body>
 </html>
