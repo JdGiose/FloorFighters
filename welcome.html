@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome | Floor Fighter</title>
+
+<style>
+:root {
+  --neon-red: #ff0000;
+  --dark-bg: #0a0a0a;
+  --card-bg: #1a1a1a;
+  --accent-gold: #ffd700;
+  --text-gray: #bbb;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background: var(--dark-bg);
+  color: #fff;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 100px 20px;
+  text-align: center;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 60px 30px;
+}
+
+h1 {
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 15px;
+  text-shadow: 0 0 10px rgba(255,0,0,0.6);
+}
+
+.subtitle {
+  color: var(--text-gray);
+  margin-bottom: 40px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 18px 40px;
+  background: var(--neon-red);
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border-radius: 4px;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: #cc0000;
+  box-shadow: 0 0 20px rgba(255,0,0,0.4);
+}
+
+.small {
+  margin-top: 35px;
+  font-size: 0.9rem;
+  color: #777;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="card">
+    <h1>Welcome</h1>
+    <div class="subtitle">
+      Payment confirmed.
+    </div>
+
+    <p>
+      Download the Battle Guide below.
+    </p>
+
+    <a href="bboy_battle_guide.pdf" class="btn">
+      Download Battle Guide (PDF)
+    </a>
+
+    <div class="small">
+      No hype. Just the guide.
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
