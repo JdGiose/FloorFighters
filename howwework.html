@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How It Works — Floor Fighters</title>
+
+<style>
+:root {
+  --neon-red: #ff0000;
+  --dark-bg: #0a0a0a;
+  --card-bg: #1a1a1a;
+  --accent-gold: #ffd700;
+  --text-gray: #bbb;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: var(--dark-bg);
+  color: #fff;
+  overflow-x: hidden;
+}
+
+/* HEADER */
+header {
+  text-align: center;
+  padding: 60px 20px;
+  border-bottom: 3px solid var(--neon-red);
+}
+
+h1 {
+  text-transform: uppercase;
+  letter-spacing: 4px;
+}
+
+.subtitle {
+  color: var(--text-gray);
+}
+
+/* STEP CARDS */
+.container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 40px 20px;
+}
+
+.step {
+  background: var(--card-bg);
+  border-left: 4px solid var(--neon-red);
+  padding: 20px;
+  margin-bottom: 25px;
+  border-radius: 6px;
+  opacity: 0;
+  transform: translateY(40px);
+  animation: fadeIn 0.6s forwards;
+}
+
+.step:nth-child(1) { animation-delay: 0.2s; }
+.step:nth-child(2) { animation-delay: 0.4s; }
+.step:nth-child(3) { animation-delay: 0.6s; }
+.step:nth-child(4) { animation-delay: 0.8s; }
+.step:nth-child(5) { animation-delay: 1s; }
+.step:nth-child(6) { animation-delay: 1.2s; }
+
+.step h2 {
+  margin-top: 0;
+  color: var(--accent-gold);
+}
+
+/* CTA buttons */
+.btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 12px 25px;
+  background: var(--neon-red);
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 4px;
+  transition: 0.2s;
+}
+
+.btn:hover {
+  background: #cc0000;
+  transform: translateY(-2px);
+}
+
+/* Animation */
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Glow */
+.glow {
+  color: var(--neon-red);
+  text-shadow: 0 0 10px rgba(255,0,0,0.7);
+}
+
+/* Divider */
+.divider {
+  text-align: center;
+  margin: 50px 0;
+  color: #444;
+  letter-spacing: 3px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>HOW IT WORKS</h1>
+<p class="subtitle">Collect Moves • Build Skill • Challenge the Gym • Earn Your Rank</p>
+</header>
+
+<div class="container">
+
+<div class="step">
+<h2>1. Start Your Journey (£1)</h2>
+<p>
+Download the <span class="glow">B-Boy Battle Guide</span> and unlock the full system.
+Learn all 90+ moves, follow structured training, and understand each gym.
+</p>
+<a href="#" class="btn">Get The Guide</a>
+</div>
+
+<div class="step">
+<h2>2. Build Your Move Set</h2>
+<p>
+Train. Practice. Record your progress.
+Upload photos/videos of your moves and build your personal profile.
+</p>
+<p>
+Each move brings you closer to qualifying for a gym battle.
+</p>
+</div>
+
+<div class="step">
+<h2>3. Prove You’re Ready</h2>
+<p>
+Once you have enough moves — screenshot your profile and send your evidence.
+</p>
+<p>
+If approved, you’ll be invited to challenge a gym leader.
+</p>
+</div>
+
+<div class="step">
+<h2>4. Get Invited to Battle (£50)</h2>
+<p>
+Receive available locations and dates.
+Choose your gym. Lock it in.
+</p>
+<p class="glow">
+You now have 2 weeks to prepare.
+</p>
+</div>
+
+<div class="step">
+<h2>5. Show Up. Battle. Win.</h2>
+<p>
+Step into the arena. Face the gym leader.
+This is real. No shortcuts.
+</p>
+<p>
+Win the battle → earn your medal, certification, and official record.
+</p>
+</div>
+
+<div class="divider">— LEVEL UP —</div>
+
+<div class="step">
+<h2>6. Become a Gym Leader</h2>
+<p>
+Train consistently through the full program (24–52 weeks).
+Earn your reputation. Prove your level.
+</p>
+<p>
+Gym Leaders:
+</p>
+<ul>
+<li>Host official battles</li>
+<li>Judge fighters</li>
+<li>Earn £10 per battle</li>
+<li>Keep all event ticket revenue</li>
+</ul>
+
+<p class="glow">
+This is not given. This is earned.
+</p>
+</div>
+
+<div class="step">
+<h2>Underground System</h2>
+<p>
+No open booking. No shortcuts.
+Everything is invite-based, real-world, and controlled.
+</p>
+
+<p>
+This is not just dance.
+This is a system.
+</p>
+</div>
+
+<a href="mailto:you@email.com" class="btn">REQUEST GYM CHALLENGE</a>
+
+</div>
+
+</body>
+</html>
