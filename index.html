@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Floor Fighter | Breakdance Tournament</title>
+    
+    <script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID&currency=GBP"></script>
+
     <style>
         :root {
             --neon-red: #ff0000;
@@ -142,11 +145,13 @@
         .step-item span { font-size: 1.5rem; font-weight: bold; margin-right: 20px; color: var(--accent-gold); }
 
         /* Call to Action Buttons */
-        .cta-container { display: flex; gap: 20px; justify-content: center; margin-top: 40px; }
+        .cta-container { display: flex; gap: 20px; justify-content: center; margin-top: 40px; flex-direction: column; align-items: center; }
         .btn { padding: 15px 30px; text-decoration: none; font-weight: bold; text-transform: uppercase; border-radius: 4px; transition: 0.3s; text-align: center; }
         .btn-primary { background-color: var(--neon-red); color: #fff; }
         .btn-primary:hover { background-color: #cc0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.4); }
-        .btn-secondary { border: 2px solid var(--accent-gold); color: var(--accent-gold); }
+        
+        /* Modified for locking state */
+        .btn-secondary { border: 2px solid var(--accent-gold); color: var(--accent-gold); pointer-events: none; opacity: 0.4; }
         .btn-secondary:hover { background: var(--accent-gold); color: #000; }
 
         footer { text-align: center; padding: 40px; font-size: 0.9rem; color: #555; }
@@ -154,7 +159,6 @@
 </head>
 <body>
 
-<!-- NAVIGATION BAR -->
 <nav>
     <div class="nav-container">
         <a href="index.html" class="nav-link">Home</a>
@@ -164,8 +168,7 @@
         <a href="howwework.html" target="_blank" class="nav-link">How It Works</a>
         <a href="contact.html" class="nav-link">Contact</a>
         
-      <!-- TOGGLEABLE TABS -->
-<a id="signin-btn"
+      <a id="signin-btn"
    class="nav-link"
    href="#"
    onclick="handleSignIn(); return false;">
@@ -223,20 +226,19 @@
         <h2 style="border:none; padding:0;">Battle System</h2>
         <p>Before entering a gym battle, use our dedicated system to validate your move set and confirm your eligibility. If you meet the criteria, you can challenge the Gym Leader in a real-time dance battle.</p>
         <div class="cta-container">
-            <a href="battle-system.html" class="btn btn-primary">Enter Battle System</a>
+            <a href="battle-system.html" class="btn btn-primary" style="pointer-events: auto; opacity: 1;">Enter Battle System</a>
         </div>
     </section>
 
     <section id="guide">
         <h2>The Battle Guide</h2>
-        <p>Master the training plans, move sets, and battle strategies required to defeat every Gym Leader in the world. The guide is your key to mastering high-score combos.“Built for self‑motivated dancers who want real access to the industry.”
-</p>
+        <p>Master the training plans, move sets, and battle strategies required to defeat every Gym Leader in the world. The guide is your key to mastering high-score combos.“Built for self‑motivated dancers who want real access to the industry.”</p>
         <div class="cta-container">
-            <a href="https://buy.stripe.com/4gM4gt7Na6HtbRWaX43Je00"
-   target="_blank"
-   class="btn btn-secondary">
-  Download Battle Guide (PDF)
-</a>
+            <div id="paypal-button-container" style="width: 100%; max-width: 300px;"></div>
+
+            <a href="battle-guide.pdf" download id="download-btn" class="btn btn-secondary">
+                Download Battle Guide (PDF)
+            </a>
         </div>
     </section>
 
@@ -245,7 +247,6 @@
     </footer>
 </div>
 
-<!-- Supabase client (must be first) -->
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
 <script>
@@ -311,6 +312,31 @@ async function handleSignOut() {
 
   // 🚀 Initial load
   document.addEventListener('DOMContentLoaded', updateNav);
+
+  // ✅ PayPal Dynamic Logic Implementation
+  paypal.Buttons({
+    createOrder: function(data, actions) {
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: '9.99' // Put your custom price here
+          }
+        }]
+      });
+    },
+    onApprove: function(data, actions) {
+      return actions.order.capture().then(function(details) {
+        const targetBtn = document.getElementById('download-btn');
+        
+        // Remove structural restrictions & reset UI state
+        targetBtn.style.pointerEvents = 'auto';
+        targetBtn.style.opacity = '1';
+        
+        // Trigger automated file execution loop
+        targetBtn.click();
+      });
+    }
+  }).render('#paypal-button-container');
 </script>
 
 </body>
