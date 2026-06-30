@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Floor Fighter | About</title>
+
+<style>
+:root {
+  --neon-red: #ff0000;
+  --dark-bg: #0a0a0a;
+  --card-bg: #1a1a1a;
+  --accent-gold: #ffd700;
+  --text-gray: #bbb;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background-color: var(--dark-bg);
+  color: #fff;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  margin: 0;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+nav {
+  background: #000;
+  border-bottom: 1px solid #222;
+  padding: 15px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.nav-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.nav-link {
+  color: var(--text-gray);
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.nav-link:hover { color: var(--neon-red); }
+.nav-link.active { color: var(--accent-gold); }
+
+#members-tab { display: none; color: var(--accent-gold); }
+#sign-out-btn { display: none; font-size: 10px; border: 1px solid #333; padding: 4px 8px; border-radius: 4px; }
+
+.hero {
+  text-align: center;
+  padding: 90px 20px 60px;
+  border-bottom: 3px solid var(--neon-red);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  width: 900px;
+  height: 900px;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(255,0,0,0.18) 0%, rgba(255,0,0,0) 65%);
+  pointer-events: none;
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+  50% { opacity: 1; transform: translateX(-50%) scale(1.08); }
+}
+
+.hero h1 {
+  font-size: 3.5rem;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin: 0;
+  text-shadow: 2px 2px 10px rgba(255, 0, 0, 0.5);
+  position: relative;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeIn 0.7s forwards 0.1s;
+}
+
+.hero .subtitle {
+  font-size: 1.2rem;
+  color: var(--text-gray);
+  font-weight: 300;
+  margin-top: 14px;
+  position: relative;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeIn 0.7s forwards 0.3s;
+}
+
+.hero .tagline {
+  margin-top: 22px;
+  font-size: 1.05rem;
+  color: #fff;
+  position: relative;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeIn 0.7s forwards 0.5s;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.container { max-width: 1000px; margin: 0 auto; padding: 60px 20px; }
+
+section { margin-bottom: 70px; }
+
+h2 {
+  color: var(--neon-red);
+  text-transform: uppercase;
+  border-left: 5px solid var(--neon-red);
+  padding-left: 15px;
+  margin-bottom: 25px;
+  font-size: 1.8rem;
+}
+
+.glow { color: var(--neon-red); text-shadow: 0 0 10px rgba(255,0,0,0.7); }
+.gold { color: var(--accent-gold); }
+
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.in-view { opacity: 1; transform: translateY(0); }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.card {
+  background: var(--card-bg);
+  padding: 25px;
+  border-radius: 8px;
+  border: 1px solid #333;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  border-color: var(--neon-red);
+  box-shadow: 0 10px 25px rgba(255,0,0,0.15);
+}
+
+.card h3 { margin-top: 0; color: var(--accent-gold); }
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  text-align: center;
+}
+
+.stat {
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 25px 10px;
+}
+
+.stat .num {
+  font-size: 2.4rem;
+  font-weight: bold;
+  color: var(--neon-red);
+  text-shadow: 0 0 12px rgba(255,0,0,0.5);
+}
+
+.stat .label {
+  color: var(--text-gray);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  margin-top: 6px;
+}
+
+.story {
+  background: #111;
+  border-left: 4px solid var(--accent-gold);
+  padding: 30px;
+  border-radius: 6px;
+}
+
+.story p { margin: 0 0 16px; }
+.story p:last-child { margin-bottom: 0; }
+
+.pull-quote {
+  text-align: center;
+  font-size: 1.4rem;
+  color: #fff;
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
+  padding: 35px 20px;
+  position: relative;
+}
+
+.pull-quote span { color: var(--accent-gold); }
+
+.divider {
+  text-align: center;
+  margin: 50px 0;
+  color: #444;
+  letter-spacing: 3px;
+}
+
+.cta-container { display: flex; gap: 20px; justify-content: center; margin-top: 10px; flex-wrap: wrap; }
+.btn {
+  padding: 15px 30px;
+  text-decoration: none;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: 4px;
+  transition: 0.3s;
+  text-align: center;
+  display: inline-block;
+}
+.btn-primary { background-color: var(--neon-red); color: #fff; }
+.btn-primary:hover { background-color: #cc0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.4); transform: translateY(-2px); }
+.btn-secondary { border: 2px solid var(--accent-gold); color: var(--accent-gold); }
+.btn-secondary:hover { background: var(--accent-gold); color: #000; transform: translateY(-2px); }
+
+footer { text-align: center; padding: 40px; font-size: 0.9rem; color: #555; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-container">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="battle-system.html" class="nav-link">Battle System</a>
+    <a href="gym-leaders.html" class="nav-link">Gym Leaders</a>
+    <a href="gallery.html" class="nav-link">Gallery</a>
+    <a href="howwework.html" class="nav-link">How It Works</a>
+    <a href="about.html" class="nav-link active">About</a>
+    <a href="contact.html" class="nav-link">Contact</a>
+
+    <a id="signin-btn" class="nav-link" href="#" onclick="handleSignIn(); return false;">Sign In</a>
+    <a href="members.html" id="members-tab" class="nav-link">Members</a>
+    <a id="sign-out-btn" class="nav-link" href="#" onclick="handleSignOut(); return false;">Sign Out</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <h1>About Floor Fighter</h1>
+  <div class="subtitle">It started on the floor. It still lives there.</div>
+  <p class="tagline">Built by dancers, for dancers who want their progress to mean something.</p>
+</div>
+
+<div class="container">
+
+  <section class="story reveal">
+    <h2 style="border:none; padding:0;">Why This Exists</h2>
+    <p>Breaking has always run on respect that's <span class="glow">earned, not given</span>. Cyphers, sessions, battles — that's where reputations actually get built, move by move, year by year.</p>
+    <p>Floor Fighter takes that same logic and gives it structure: a system of Gyms, Gym Leaders, and real challenges — so a medal means you actually went through something, not just signed up for it.</p>
+  </section>
+
+  <section class="reveal">
+    <div class="pull-quote">
+      No shortcuts. No instant access. <span class="gold">You train, you prove it, you battle.</span>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <h2>What We're Building</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>A Real Path</h3>
+        <p>Not a one-off tournament. A progression — from your first Toprock to standing across from a Gym Leader who's already walked the same road.</p>
+      </div>
+      <div class="card">
+        <h3>Leaders Who've Earned It</h3>
+        <p>Every Gym Leader trained through the full program before they got the right to host battles and judge fighters. Nobody skips the line.</p>
+      </div>
+      <div class="card">
+        <h3>A System, Not a Gimmick</h3>
+        <p>Move sets, eligibility checks, verified battles, recorded results. The structure exists so your work actually counts for something.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <h2>By The Numbers</h2>
+    <div class="stats-row">
+      <div class="stat"><div class="num" data-target="104">0</div><div class="label">Moves in the Arsenal</div></div>
+      <div class="stat"><div class="num" data-target="10">0</div><div class="label">Gyms to Conquer</div></div>
+      <div class="stat"><div class="num" data-target="52">0</div><div class="label">Weeks to Gym Leader</div></div>
+      <div class="stat"><div class="num" data-target="0">0</div><div class="label">Shortcuts Allowed</div></div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <h2>Who It's For</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>The Self-Motivated</h3>
+        <p>Dancers who train without being told to, and want their progress to mean something outside their own head.</p>
+      </div>
+      <div class="card">
+        <h3>The Unconvinced</h3>
+        <p>The ones who've watched the scene get diluted by hype and easy access, and still want something that asks something of you.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider">— THE POINT OF ALL THIS —</div>
+
+  <section class="reveal">
+    <div class="story" style="border-left-color: var(--neon-red);">
+      <p>Strip away the gyms, the medals, the rules — what's left is the same thing that's always made this culture worth being part of: people showing up for each other, pushing each other, building something real together on the floor.</p>
+      <p><strong>That's the whole reason Floor Fighter exists.</strong></p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="cta-container">
+      <a href="howwework.html" class="btn btn-primary">See How It Works</a>
+      <a href="contact.html" class="btn btn-secondary">Request a Challenge</a>
+    </div>
+  </section>
+
+</div>
+
+<footer>&copy; 2023 Floor Fighter Tournament. All rights reserved.</footer>
+
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script>
+const supabaseUrl = 'https://ytvscznqokavsgrbhrgf.supabase.co';
+const supabaseKey = 'sb_publishable_eBNJuaN7oZoQJOglw5IBdg_mGlqZFmc';
+const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+async function handleSignIn() {
+  const userEmail = prompt('Enter your email to sign in:');
+  if (!userEmail) return;
+  const { error } = await supabaseClient.auth.signInWithOtp({
+    email: userEmail,
+    options: { emailRedirectTo: 'https://jdgiose.github.io/FloorFighters' }
+  });
+  if (error) alert('Error sending magic link: ' + error.message);
+  else alert('Check your email for the magic link.');
+}
+
+async function handleSignOut() {
+  await supabaseClient.auth.signOut();
+}
+
+async function updateNav() {
+  const signInBtn = document.getElementById('signin-btn');
+  const membersTab = document.getElementById('members-tab');
+  const signOutBtn = document.getElementById('sign-out-btn');
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if (session) {
+    signInBtn.style.display = 'none';
+    membersTab.style.display = 'block';
+    signOutBtn.style.display = 'block';
+  } else {
+    signInBtn.style.display = 'block';
+    membersTab.style.display = 'none';
+    signOutBtn.style.display = 'none';
+  }
+}
+
+supabaseClient.auth.onAuthStateChange(() => { updateNav(); });
+
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('in-view');
+      io.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+revealEls.forEach(el => io.observe(el));
+
+function animateCount(el) {
+  const target = parseInt(el.dataset.target, 10);
+  if (target === 0) { el.textContent = '0'; return; }
+  const duration = 1200;
+  const start = performance.now();
+  function tick(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    el.textContent = Math.floor(progress * target);
+    if (progress < 1) requestAnimationFrame(tick);
+    else el.textContent = target;
+  }
+  requestAnimationFrame(tick);
+}
+
+const statEls = document.querySelectorAll('.stat .num');
+const statIO = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      animateCount(entry.target);
+      statIO.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.5 });
+statEls.forEach(el => statIO.observe(el));
+
+document.addEventListener('DOMContentLoaded', updateNav);
+</script>
+
+</body>
+</html>
